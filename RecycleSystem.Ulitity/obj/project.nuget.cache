@@ -1,0 +1,10 @@
+{
+  "version": 2,
+  "dgSpecHash": "F2KSheaRGsrFMPS/mYstmNeOmQoDSYpH6r04P71QmT4zVTgJ1zPrwnGR8zfF35cOrkzuiJPUtkQScuTqctKtew==",
+  "success": true,
+  "projectFilePath": "E:\\MyProject\\RecycleSystem\\RecycleSystem.Ulitity\\RecycleSystem.Ulitity.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\Senku\\.nuget\\packages\\newtonsoft.json\\12.0.3\\newtonsoft.json.12.0.3.nupkg.sha512"
+  ],
+  "logs": []
+}

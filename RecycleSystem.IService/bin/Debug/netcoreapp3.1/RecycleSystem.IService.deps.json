@@ -1,0 +1,36 @@
+{
+  "runtimeTarget": {
+    "name": ".NETCoreApp,Version=v3.1",
+    "signature": ""
+  },
+  "compilationOptions": {},
+  "targets": {
+    ".NETCoreApp,Version=v3.1": {
+      "RecycleSystem.IService/1.0.0": {
+        "dependencies": {
+          "RecycleSystem.Data": "1.0.0"
+        },
+        "runtime": {
+          "RecycleSystem.IService.dll": {}
+        }
+      },
+      "RecycleSystem.Data/1.0.0": {
+        "runtime": {
+          "RecycleSystem.Data.dll": {}
+        }
+      }
+    }
+  },
+  "libraries": {
+    "RecycleSystem.IService/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "RecycleSystem.Data/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    }
+  }
+}
