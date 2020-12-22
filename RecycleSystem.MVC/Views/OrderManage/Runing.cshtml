@@ -77,23 +77,19 @@
         });
         
         //头工具栏事件
-        table.on('toolbar(orderList)', function (obj) {
+        table.on('tool(orderList)', function (obj) {
             debugger;
-            var checkStatus = table.checkStatus(obj.config.id);
+            var checkStatus = table.checkStatus(obj.data.id);
             switch (obj.event) {
                 case 'View':
-                    var Id = checkStatus.data[0].id;
-
-                    $.ajax({
-                        url: "/OrderManage/ViewOrder",
-                        type: "post",
-                        data: {
-                            Id: Id
-                        },
-                        success: function (res) {
-                            layer.alert(res);
-                            btn_search();
-                        }
+                    var data = obj.data;
+                    console.log(data);
+                    layer.open({
+                        type: 2,
+                        title: "订单进度查看",
+                        shade: 0.8,
+                        area: ['780px', '620px'],
+                        content: ['/OrderManage/ViewOrder?oid=' + data.oid + ''],
                     });
                     break;
 

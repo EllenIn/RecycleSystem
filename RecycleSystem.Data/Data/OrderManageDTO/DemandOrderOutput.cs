@@ -14,6 +14,7 @@ namespace RecycleSystem.Data.Data.OrderManageDTO
         public string Num { get; set; }
         public string Unit { get; set; }
         public string Receiver { get; set; }
+        public string EnterpriseName { get; set; }
         public DateTime? AddTime { get; set; }
         public int? Status { get; set; }
     }

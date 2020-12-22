@@ -113,6 +113,40 @@
                                 </dd>
                             </dl>
                         </li>
+                        <li class="layui-nav-item  layui-nav-itemed">
+                            <a href="javascript:;">
+                                <i class="layui-icon layui-icon-diamond"></i>
+                                <cite>仓库管理</cite>
+                            </a>
+                            <dl class="layui-nav-child">
+                                <dd>
+                                    <a lay-href="/WareHouse/Index">废品入库</a>
+                                </dd>
+                                <dd>
+                                    <a lay-href="/WareHouse/ViewAll">查看仓库物品</a>
+                                </dd>
+                                <dd>
+                                    <a lay-href="/WareHouse/DeviceInput">设备入库</a>
+                                </dd>
+                            </dl>
+                        </li>
+                        <li class="layui-nav-item  layui-nav-itemed">
+                            <a href="javascript:;">
+                                <i class="layui-icon layui-icon-diamond"></i>
+                                <cite>发布订单管理</cite>
+                            </a>
+                            <dl class="layui-nav-child">
+                                <dd>
+                                    <a lay-href="/OrderManage/ReleaseOrder">发布订单</a>
+                                </dd>
+                                <dd>
+                                    <a lay-href="/OrderManage/ViewReleasedOrders">查看订单</a>
+                                </dd>
+                                <dd>
+                                    <a lay-href="/OrderManage/ViewAllOrders">所有订单</a>
+                                </dd>
+                            </dl>
+                        </li>
                         @*<ul class="layui-nav layui-nav-tree" lay-shrink="all">
         @foreach (var i in ViewBag.MenuList)
         {

@@ -18,6 +18,28 @@ namespace RecycleSystem.Service
             _dbContext = dbContext;
         }
 
+        public bool AcceptOrder(string oid, string userId, out string message)
+        {
+            IQueryable<DemandOrderInfo> orderInfos = _dbContext.Set<DemandOrderInfo>();
+            DemandOrderInfo orderInfo = orderInfos.Where(o => o.Oid == oid).FirstOrDefault();
+            if (orderInfo != null)
+            {
+                
+                orderInfo.UserId = userId;
+                orderInfo.Status = (int?)TypeEnum.OrderStatus.Accepted;
+                _dbContext.Set<DemandOrderInfo>().Update(orderInfo);
+                if (_dbContext.SaveChanges() > 0)
+                {
+                    message = "接单成功！";
+                    return true;
+                }
+                message = "失败！内部出现异常";
+                return false;
+            }
+            message = "订单不存在！";
+            return false;
+        }
+
         public IEnumerable<DemandOrderOutput> GetFinishedOrder(int page, int limit, out int count, string queryInfo)
         {
             IQueryable<UserInfo> userInfos = _dbContext.Set<UserInfo>();
@@ -37,9 +59,36 @@ namespace RecycleSystem.Service
                                                                Status = a.Status,
                                                                AddTime = a.AddTime,
                                                                Category = (from g in categorylnfos where g.CategoryId == a.CategoryId select new { g.CategoryName }).Select(s => s.CategoryName).FirstOrDefault(),
-                                                               Receiver = (from n in userInfos where n.UserId == a.UserId select new { n.UserName }).Select(s => s.UserName).FirstOrDefault()
+                                                               Receiver = (from n in userInfos where n.UserId == a.UserId select new { n.UserName }).Select(s => s.UserName).FirstOrDefault(),
+                                                               EnterpriseName = (from n in userInfos where n.UserId == a.EnterpriseId select new { n.EnterpriseName }).Select(s => s.EnterpriseName).FirstOrDefault(),
                                                            }).OrderBy(o => o.Id).Skip((page - 1) * limit).Take(limit).ToList();
             return orderOutputs;
+        }
+
+        public DemandOrderOutput GetOrderByOID(string id)
+        {
+            IQueryable<UserInfo> userInfos = _dbContext.Set<UserInfo>();
+            IQueryable<Categorylnfo> categorylnfos = _dbContext.Set<Categorylnfo>();
+            DemandOrderInfo info = _dbContext.Set<DemandOrderInfo>().Where(d => d.Oid == id).FirstOrDefault();
+            if (info != null)
+            {
+                DemandOrderOutput output = new DemandOrderOutput
+                {
+                    Id = info.Id,
+                    Oid = info.Oid,
+                    Name = info.Name,
+                    Num = info.Num,
+                    Unit = info.Unit,
+                    Enterpriser = (from u in userInfos where u.UserId == info.EnterpriseId select new { u.UserName }).Select(s => s.UserName).FirstOrDefault(),
+                    Status = info.Status,
+                    AddTime = info.AddTime,
+                    Category = (from g in categorylnfos where g.CategoryId == info.CategoryId select new { g.CategoryName }).Select(s => s.CategoryName).FirstOrDefault(),
+                    Receiver = (from n in userInfos where n.UserId == info.UserId select new { n.UserName }).Select(s => s.UserName).FirstOrDefault(),
+                    EnterpriseName = (from e in userInfos where e.UserId == info.EnterpriseId select new { e.EnterpriseName }).Select(s => s.EnterpriseName).FirstOrDefault()
+                };
+                return output;
+            }
+            return null;
         }
 
         /// <summary>
@@ -68,7 +117,8 @@ namespace RecycleSystem.Service
                                                                Enterpriser = (from u in userInfos where u.UserId == a.EnterpriseId select new { u.UserName }).Select(s => s.UserName).FirstOrDefault(),
                                                                Status = a.Status,
                                                                AddTime = a.AddTime,
-                                                               Category = (from g in categorylnfos where g.CategoryId == a.CategoryId select new { g.CategoryName }).Select(s => s.CategoryName).FirstOrDefault()
+                                                               Category = (from g in categorylnfos where g.CategoryId == a.CategoryId select new { g.CategoryName }).Select(s => s.CategoryName).FirstOrDefault(),
+                                                               EnterpriseName = (from n in userInfos where n.UserId == a.EnterpriseId select new { n.EnterpriseName }).Select(s => s.EnterpriseName).FirstOrDefault(),
                                                            }).OrderBy(o => o.Id).Skip((page - 1) * limit).Take(limit).ToList();
             return orderOutputs;
         }
@@ -92,7 +142,8 @@ namespace RecycleSystem.Service
                                                                Status = a.Status,
                                                                AddTime = a.AddTime,
                                                                Category = (from g in categorylnfos where g.CategoryId == a.CategoryId select new { g.CategoryName }).Select(s => s.CategoryName).FirstOrDefault(),
-                                                               Receiver = (from n in userInfos where n.UserId == a.UserId select new { n.UserName }).Select(s => s.UserName).FirstOrDefault()
+                                                               Receiver = (from n in userInfos where n.UserId == a.UserId select new { n.UserName }).Select(s => s.UserName).FirstOrDefault(),
+                                                               EnterpriseName = (from n in userInfos where n.UserId == a.EnterpriseId select new { n.EnterpriseName }).Select(s => s.EnterpriseName).FirstOrDefault(),
                                                            }).OrderBy(o => o.Id).Skip((page - 1) * limit).Take(limit).ToList();
             return orderOutputs;
         }

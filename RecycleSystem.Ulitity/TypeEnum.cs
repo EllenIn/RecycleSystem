@@ -17,5 +17,10 @@ namespace RecycleSystem.Ulitity
             Accepted,
             Finished
         }
+        public enum PressStatus
+        {
+            unPress,
+            Pressed
+        }
     }
 }

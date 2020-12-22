@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using RecycleSystem.Data.Data.OrderManageDTO;
 using RecycleSystem.DataEntity.Entities;
@@ -82,6 +83,32 @@ namespace RecycleSystem.MVC.Controllers
                 data = finishedOrder
             };
             return JsonNetHelper.SerialzeoJsonForCamelCase(data);
+        }
+        public IActionResult ViewOrder(string oid)
+        {
+           ViewBag.Order =  _orderManageService.GetOrderByOID(oid);
+            return View();
+        }
+        public JsonResult AcceptOrder(string oid)
+        {
+            string message;
+            string userId;
+            try
+            {
+                userId = HttpContext.Session.GetString("UserId");
+                if (string.IsNullOrEmpty(userId))
+                {
+                    message = "未登录！或登录已失效！";
+                    return Json(message);
+                }
+            }
+            catch (Exception ex)
+            {
+                message = ex.Message;
+                return Json(message);
+            }
+            _orderManageService.AcceptOrder(oid, userId, out message);
+            return Json(message);
         }
     }
 }

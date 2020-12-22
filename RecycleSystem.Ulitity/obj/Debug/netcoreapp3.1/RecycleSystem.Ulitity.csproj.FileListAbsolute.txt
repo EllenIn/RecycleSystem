@@ -22,6 +22,5 @@ C:\Users\Administrator\Desktop\RecycleSystem\RecycleSystem.Ulitity\bin\Debug\net
 C:\Users\Administrator\Desktop\RecycleSystem\RecycleSystem.Ulitity\obj\Debug\netcoreapp3.1\RecycleSystem.Ulitity.csprojAssemblyReference.cache
 C:\Users\Administrator\Desktop\RecycleSystem\RecycleSystem.Ulitity\obj\Debug\netcoreapp3.1\RecycleSystem.Ulitity.AssemblyInfoInputs.cache
 C:\Users\Administrator\Desktop\RecycleSystem\RecycleSystem.Ulitity\obj\Debug\netcoreapp3.1\RecycleSystem.Ulitity.AssemblyInfo.cs
-C:\Users\Administrator\Desktop\RecycleSystem\RecycleSystem.Ulitity\obj\Debug\netcoreapp3.1\RecycleSystem.Ulitity.csproj.CoreCompileInputs.cache
 C:\Users\Administrator\Desktop\RecycleSystem\RecycleSystem.Ulitity\obj\Debug\netcoreapp3.1\RecycleSystem.Ulitity.dll
 C:\Users\Administrator\Desktop\RecycleSystem\RecycleSystem.Ulitity\obj\Debug\netcoreapp3.1\RecycleSystem.Ulitity.pdb

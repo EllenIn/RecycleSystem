@@ -533,3 +533,7 @@ E:\MyProject\RecycleSystem\RecycleSystem.MVC\obj\Debug\netcoreapp3.1\Razor\Views
 E:\MyProject\RecycleSystem\RecycleSystem.MVC\obj\Debug\netcoreapp3.1\Razor\Views\RoleManage\Update.cshtml.g.cs
 E:\MyProject\RecycleSystem\RecycleSystem.MVC\obj\Debug\netcoreapp3.1\Razor\Views\OrderManage\Runing.cshtml.g.cs
 E:\MyProject\RecycleSystem\RecycleSystem.MVC\obj\Debug\netcoreapp3.1\Razor\Views\OrderManage\Finished.cshtml.g.cs
+C:\Users\Administrator\Desktop\RecycleSystem\RecycleSystem.MVC\obj\Debug\netcoreapp3.1\Razor\Views\OrderManage\Finished.cshtml.g.cs
+C:\Users\Administrator\Desktop\RecycleSystem\RecycleSystem.MVC\obj\Debug\netcoreapp3.1\Razor\Views\OrderManage\Runing.cshtml.g.cs
+C:\Users\Administrator\Desktop\RecycleSystem\RecycleSystem.MVC\obj\Debug\netcoreapp3.1\Razor\Views\WareHouse\Index.cshtml.g.cs
+C:\Users\Administrator\Desktop\RecycleSystem\RecycleSystem.MVC\obj\Debug\netcoreapp3.1\Razor\Views\OrderManage\ViewOrder.cshtml.g.cs

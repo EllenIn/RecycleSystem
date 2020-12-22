@@ -6,6 +6,11 @@
 
   <ItemGroup>
     <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
+    <PackageReference Include="NPOI" Version="2.5.2" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\RecycleSystem.Data\RecycleSystem.Data.csproj" />
   </ItemGroup>
 
 </Project>

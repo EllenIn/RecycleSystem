@@ -60,15 +60,9 @@
                 { type: 'checkbox', fixed: 'left' }
                 , { field: 'id', title: 'ID', width: 80, fixed: 'left', unresize: true, sort: false }
                 , { field: 'userId', title: '用户账号', width: 100, edit: 'text' }
-                , {
-                    field: 'userName', title: '用户名', width: 120, edit: 'text'
-                }
+                , { field: 'userName', title: '用户名', width: 120, edit: 'text' }
                 , { field: 'tel', title: '电话号码', width: 150, edit: 'text', sort: false }
-                , {
-                    field: 'email', title: '邮箱', width: 250, templet: function (res) {
-                        return '<em>' + res.email + '</em>'
-                    }
-                }
+                , { field: 'email', title: '邮箱', width: 250 }
                 , { field: 'roleName', title: '角色', width: 350 }
                 , { field: 'departmentName', title: '所属部门', width: 180 }
                 , {
@@ -82,9 +76,7 @@
                     }
                 }
                 , { field: 'addTime', title: '添加时间', width: 200 }
-                , {
-                    field: 'delFlag', title: '用户状态', width: 130, sort: false, templet: '#userState'
-                }
+                , { field: 'delFlag', title: '用户状态', width: 130, sort: false, templet: '#userState' }
             ]]
             , page: true
             , limit: 10
