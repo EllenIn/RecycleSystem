@@ -11,7 +11,7 @@ namespace RecycleSystem.Ulitity
             isGeneralUser=1,
             isEnterpriseUser
         }
-        public enum OrderStatus
+        public enum DemendOrderStatus
         {
             unAccept=1,
             Accepted,
@@ -21,6 +21,11 @@ namespace RecycleSystem.Ulitity
         {
             unPress,
             Pressed
+        }
+        public enum OrderStatus
+        {
+            Running,
+            Finished
         }
     }
 }

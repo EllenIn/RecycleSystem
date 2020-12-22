@@ -24,3 +24,15 @@ C:\Users\Administrator\Desktop\RecycleSystem\RecycleSystem.Ulitity\obj\Debug\net
 C:\Users\Administrator\Desktop\RecycleSystem\RecycleSystem.Ulitity\obj\Debug\netcoreapp3.1\RecycleSystem.Ulitity.AssemblyInfo.cs
 C:\Users\Administrator\Desktop\RecycleSystem\RecycleSystem.Ulitity\obj\Debug\netcoreapp3.1\RecycleSystem.Ulitity.dll
 C:\Users\Administrator\Desktop\RecycleSystem\RecycleSystem.Ulitity\obj\Debug\netcoreapp3.1\RecycleSystem.Ulitity.pdb
+E:\Senkuu\RecycleSystem\RecycleSystem.Ulitity\bin\Debug\netcoreapp3.1\RecycleSystem.Ulitity.deps.json
+E:\Senkuu\RecycleSystem\RecycleSystem.Ulitity\bin\Debug\netcoreapp3.1\RecycleSystem.Ulitity.dll
+E:\Senkuu\RecycleSystem\RecycleSystem.Ulitity\bin\Debug\netcoreapp3.1\RecycleSystem.Ulitity.pdb
+E:\Senkuu\RecycleSystem\RecycleSystem.Ulitity\bin\Debug\netcoreapp3.1\RecycleSystem.Data.dll
+E:\Senkuu\RecycleSystem\RecycleSystem.Ulitity\bin\Debug\netcoreapp3.1\RecycleSystem.Data.pdb
+E:\Senkuu\RecycleSystem\RecycleSystem.Ulitity\obj\Debug\netcoreapp3.1\RecycleSystem.Ulitity.csprojAssemblyReference.cache
+E:\Senkuu\RecycleSystem\RecycleSystem.Ulitity\obj\Debug\netcoreapp3.1\RecycleSystem.Ulitity.AssemblyInfoInputs.cache
+E:\Senkuu\RecycleSystem\RecycleSystem.Ulitity\obj\Debug\netcoreapp3.1\RecycleSystem.Ulitity.AssemblyInfo.cs
+E:\Senkuu\RecycleSystem\RecycleSystem.Ulitity\obj\Debug\netcoreapp3.1\RecycleSystem.Ulitity.csproj.CoreCompileInputs.cache
+E:\Senkuu\RecycleSystem\RecycleSystem.Ulitity\obj\Debug\netcoreapp3.1\RecycleSystem.Ulitity.csproj.CopyComplete
+E:\Senkuu\RecycleSystem\RecycleSystem.Ulitity\obj\Debug\netcoreapp3.1\RecycleSystem.Ulitity.dll
+E:\Senkuu\RecycleSystem\RecycleSystem.Ulitity\obj\Debug\netcoreapp3.1\RecycleSystem.Ulitity.pdb

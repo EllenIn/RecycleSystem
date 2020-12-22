@@ -74,7 +74,7 @@
                                 shade: 0.8,
                                 maxmin: true, //开启最大化最小化按钮
                                 area: ['893px', '600px'],
-                                content: '/UserManage/Update?Id=' + id,
+                                content: '/WareHouse/Update?Id=' + id,
                                 end: function () {
                                     btn_search();
                                 }
@@ -101,4 +101,20 @@
             }
         });
     });
+    //查询
+    btn_search = function () {
+        debugger;
+        var selectInfo = $("#txt_Query").val();
+
+        //重新加载表格，并把文本框的内容传给后台
+        table.reload('inputInfoList', {
+            url: '/WareHouse/GetInputInfo',
+            page: {
+                curr: 1//从第一页开始（很关键）
+            },
+            where: {
+                queryInfo: selectInfo, //需传过去的值
+            }
+        });
+    };
 </script>

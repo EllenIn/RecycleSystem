@@ -163,9 +163,9 @@ namespace RecycleSystem.DataEntity.Entities
 
                 entity.Property(e => e.InstanceId).HasColumnName("InstanceID");
 
-                entity.Property(e => e.UserId).HasColumnName("UserID");
+                entity.Property(e => e.EnterpriseId).HasColumnName("EnterpriseId");
 
-                entity.Property(e => e.UsersId).HasColumnName("UsersID");
+                entity.Property(e => e.ReceiverId).HasColumnName("ReceiverId");
             });
 
             modelBuilder.Entity<PowerInfo>(entity =>

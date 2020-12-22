@@ -56,7 +56,7 @@ namespace Senkuu.MaterialSystem.Utility
                     for (int i = firstRow.FirstCellNum; i < cellCount; i++)
                     {
                         ICell cell = firstRow.GetCell(i);
-                        if (cell!=null)
+                        if (cell != null)
                         {
                             string cellValue = cell.StringCellValue.Trim();
                             if (!string.IsNullOrEmpty(cellValue))
@@ -78,7 +78,7 @@ namespace Senkuu.MaterialSystem.Utility
                             continue;
                         }
                         // row 行。 cell列
-                        for (int i = row.FirstCellNum; i < cellCount; i++)
+                        for (int i = row.FirstCellNum; i < 6; i++)
                         {
                             ICell cellData = row.GetCell(i);
                             if (cellData!=null)
@@ -142,27 +142,6 @@ namespace Senkuu.MaterialSystem.Utility
 
                         //取值
                         object value = dr[tempName];
-                        if (tempName == "CategoryId")
-                        {
-                            value = Convert.ToInt32(value);
-                        }
-                        if (tempName == "Money")
-                        {
-
-                            value = Convert.ToDecimal(value);
-                            if ((decimal)value<0)
-                            {
-                                value = 0;
-                            }
-                        }
-                        if (tempName== "Num"||tempName== "WarningNum")
-                        {
-                            value = Convert.ToDouble(value);
-                            if ((double)value<0)
-                            {
-                                value = 0;
-                            }
-                        }
                         //如果非空，则赋给对象的属性
                         if (value != DBNull.Value)
                             pi.SetValue(t, value, null);

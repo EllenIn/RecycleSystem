@@ -24,10 +24,34 @@ namespace RecycleSystem.Service
             DemandOrderInfo orderInfo = orderInfos.Where(o => o.Oid == oid).FirstOrDefault();
             if (orderInfo != null)
             {
-                
+
                 orderInfo.UserId = userId;
-                orderInfo.Status = (int?)TypeEnum.OrderStatus.Accepted;
+                orderInfo.Status = (int?)TypeEnum.DemendOrderStatus.Accepted;
                 _dbContext.Set<DemandOrderInfo>().Update(orderInfo);
+
+                //改变需求订单状态的同时，要往订单表中也插入一条数据。方便后续内部管理者查看
+                //查询是否已经有人接取订单（此功能类似抢购，可能同时并发，因现今技术问题，暂时使用此方法来判断）
+                OrderInfo order = _dbContext.Set<OrderInfo>().Where(o => o.OriginalOrderId == orderInfo.Oid).FirstOrDefault();
+                if (order != null)
+                {
+                    message = "该订单已被人接取！";
+                    return false;
+                }
+                OrderInfo newOrder = new OrderInfo
+                {
+                    InstanceId = "O" + DateTime.Now.ToString("yyyyMMddHHmmssffff"),//要求要日期的时分秒以及毫秒
+                    CategoryId = orderInfo.CategoryId,
+                    Name = orderInfo.Name,
+                    OriginalOrderId = orderInfo.Oid,
+                    EnterpriseId = orderInfo.EnterpriseId,
+                    Num = orderInfo.Num,
+                    Unit = orderInfo.Unit,
+                    ReceiverId = orderInfo.UserId,
+                    Status = (int)TypeEnum.OrderStatus.Running,
+                    AddTime = DateTime.Now,
+                    Url = null
+                };
+                _dbContext.Set<OrderInfo>().Add(newOrder);
                 if (_dbContext.SaveChanges() > 0)
                 {
                     message = "接单成功！";
@@ -44,7 +68,7 @@ namespace RecycleSystem.Service
         {
             IQueryable<UserInfo> userInfos = _dbContext.Set<UserInfo>();
             IQueryable<Categorylnfo> categorylnfos = _dbContext.Set<Categorylnfo>();
-            IQueryable<DemandOrderInfo> orderInfos = _dbContext.Set<DemandOrderInfo>().Where(o => o.Status == (int)TypeEnum.OrderStatus.Finished); // To Find The order which has been finished
+            IQueryable<DemandOrderInfo> orderInfos = _dbContext.Set<DemandOrderInfo>().Where(o => o.Status == (int)TypeEnum.DemendOrderStatus.Finished); // To Find The order which has been finished
             count = orderInfos.Count();
             IEnumerable<DemandOrderOutput> orderOutputs = (from a in orderInfos
                                                            where a.Oid.Contains(queryInfo) || queryInfo == null
@@ -103,7 +127,7 @@ namespace RecycleSystem.Service
         {
             IQueryable<UserInfo> userInfos = _dbContext.Set<UserInfo>();
             IQueryable<Categorylnfo> categorylnfos = _dbContext.Set<Categorylnfo>();
-            IQueryable<DemandOrderInfo> orderInfos = _dbContext.Set<DemandOrderInfo>().Where(o => o.Status == (int)TypeEnum.OrderStatus.unAccept); //未接受的订单
+            IQueryable<DemandOrderInfo> orderInfos = _dbContext.Set<DemandOrderInfo>().Where(o => o.Status == (int)TypeEnum.DemendOrderStatus.unAccept); //未接受的订单
             count = orderInfos.Count();
             IEnumerable<DemandOrderOutput> orderOutputs = (from a in orderInfos
                                                            where a.Oid.Contains(queryInfo) || queryInfo == null
@@ -127,7 +151,7 @@ namespace RecycleSystem.Service
         {
             IQueryable<UserInfo> userInfos = _dbContext.Set<UserInfo>();
             IQueryable<Categorylnfo> categorylnfos = _dbContext.Set<Categorylnfo>();
-            IQueryable<DemandOrderInfo> orderInfos = _dbContext.Set<DemandOrderInfo>().Where(o => o.Status == (int)TypeEnum.OrderStatus.Accepted); // To query the order which has been accpeted
+            IQueryable<DemandOrderInfo> orderInfos = _dbContext.Set<DemandOrderInfo>().Where(o => o.Status == (int)TypeEnum.DemendOrderStatus.Accepted); // To query the order which has been accpeted
             count = orderInfos.Count();
             IEnumerable<DemandOrderOutput> orderOutputs = (from a in orderInfos
                                                            where a.Oid.Contains(queryInfo) || queryInfo == null

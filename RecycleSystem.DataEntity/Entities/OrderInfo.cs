@@ -9,11 +9,12 @@ namespace RecycleSystem.DataEntity.Entities
     {
         public int Id { get; set; }
         public string InstanceId { get; set; }
-        public string UserId { get; set; }
+        public string EnterpriseId { get; set; }
         public string Name { get; set; }
+        public string OriginalOrderId { get; set; }
         public string CategoryId { get; set; }
         public string Num { get; set; }
-        public string UsersId { get; set; }
+        public string ReceiverId { get; set; }
         public DateTime? AddTime { get; set; }
         public string Unit { get; set; }
         public int? Status { get; set; }

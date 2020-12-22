@@ -7267,11 +7267,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\Administrator\\Desktop\\RecycleSystem\\RecycleSystem.Service\\RecycleSystem.Service.csproj",
+      "projectUniqueName": "E:\\Senkuu\\RecycleSystem\\RecycleSystem.Service\\RecycleSystem.Service.csproj",
       "projectName": "RecycleSystem.Service",
-      "projectPath": "C:\\Users\\Administrator\\Desktop\\RecycleSystem\\RecycleSystem.Service\\RecycleSystem.Service.csproj",
+      "projectPath": "E:\\Senkuu\\RecycleSystem\\RecycleSystem.Service\\RecycleSystem.Service.csproj",
       "packagesPath": "C:\\Users\\Administrator\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\Administrator\\Desktop\\RecycleSystem\\RecycleSystem.Service\\obj\\",
+      "outputPath": "E:\\Senkuu\\RecycleSystem\\RecycleSystem.Service\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Microsoft\\Xamarin\\NuGet\\",
@@ -7292,14 +7292,14 @@
       "frameworks": {
         "netcoreapp3.1": {
           "projectReferences": {
-            "C:\\Users\\Administrator\\Desktop\\RecycleSystem\\RecycleSystem.DataEntity\\RecycleSystem.DataEntity.csproj": {
-              "projectPath": "C:\\Users\\Administrator\\Desktop\\RecycleSystem\\RecycleSystem.DataEntity\\RecycleSystem.DataEntity.csproj"
+            "E:\\Senkuu\\RecycleSystem\\RecycleSystem.DataEntity\\RecycleSystem.DataEntity.csproj": {
+              "projectPath": "E:\\Senkuu\\RecycleSystem\\RecycleSystem.DataEntity\\RecycleSystem.DataEntity.csproj"
             },
-            "C:\\Users\\Administrator\\Desktop\\RecycleSystem\\RecycleSystem.IService\\RecycleSystem.IService.csproj": {
-              "projectPath": "C:\\Users\\Administrator\\Desktop\\RecycleSystem\\RecycleSystem.IService\\RecycleSystem.IService.csproj"
+            "E:\\Senkuu\\RecycleSystem\\RecycleSystem.IService\\RecycleSystem.IService.csproj": {
+              "projectPath": "E:\\Senkuu\\RecycleSystem\\RecycleSystem.IService\\RecycleSystem.IService.csproj"
             },
-            "C:\\Users\\Administrator\\Desktop\\RecycleSystem\\RecycleSystem.Ulitity\\RecycleSystem.Ulitity.csproj": {
-              "projectPath": "C:\\Users\\Administrator\\Desktop\\RecycleSystem\\RecycleSystem.Ulitity\\RecycleSystem.Ulitity.csproj"
+            "E:\\Senkuu\\RecycleSystem\\RecycleSystem.Ulitity\\RecycleSystem.Ulitity.csproj": {
+              "projectPath": "E:\\Senkuu\\RecycleSystem\\RecycleSystem.Ulitity\\RecycleSystem.Ulitity.csproj"
             }
           }
         }

@@ -554,11 +554,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\Administrator\\Desktop\\RecycleSystem\\RecycleSystem.Ulitity\\RecycleSystem.Ulitity.csproj",
+      "projectUniqueName": "E:\\Senkuu\\RecycleSystem\\RecycleSystem.Ulitity\\RecycleSystem.Ulitity.csproj",
       "projectName": "RecycleSystem.Ulitity",
-      "projectPath": "C:\\Users\\Administrator\\Desktop\\RecycleSystem\\RecycleSystem.Ulitity\\RecycleSystem.Ulitity.csproj",
+      "projectPath": "E:\\Senkuu\\RecycleSystem\\RecycleSystem.Ulitity\\RecycleSystem.Ulitity.csproj",
       "packagesPath": "C:\\Users\\Administrator\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\Administrator\\Desktop\\RecycleSystem\\RecycleSystem.Ulitity\\obj\\",
+      "outputPath": "E:\\Senkuu\\RecycleSystem\\RecycleSystem.Ulitity\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Microsoft\\Xamarin\\NuGet\\",
@@ -579,8 +579,8 @@
       "frameworks": {
         "netcoreapp3.1": {
           "projectReferences": {
-            "C:\\Users\\Administrator\\Desktop\\RecycleSystem\\RecycleSystem.Data\\RecycleSystem.Data.csproj": {
-              "projectPath": "C:\\Users\\Administrator\\Desktop\\RecycleSystem\\RecycleSystem.Data\\RecycleSystem.Data.csproj"
+            "E:\\Senkuu\\RecycleSystem\\RecycleSystem.Data\\RecycleSystem.Data.csproj": {
+              "projectPath": "E:\\Senkuu\\RecycleSystem\\RecycleSystem.Data\\RecycleSystem.Data.csproj"
             }
           }
         }

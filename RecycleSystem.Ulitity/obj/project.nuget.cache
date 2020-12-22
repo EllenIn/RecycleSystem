@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "ExW5kOIKdJIp0Kka7O7uBbVOsqlMwzbYItyFzK8xJylXDxs7jVkjI4u6vqqh72Wm8bbRV4SkqApa7pGEbvs7xg==",
+  "dgSpecHash": "C1j6QOjB+qgTar9fH1IuicBjZH9DuA21tywySCTkMtOxws7q8cqG6HW466anyOca48F6FlLcIccNSP7Z1kS9rg==",
   "success": true,
-  "projectFilePath": "C:\\Users\\Administrator\\Desktop\\RecycleSystem\\RecycleSystem.Ulitity\\RecycleSystem.Ulitity.csproj",
+  "projectFilePath": "E:\\Senkuu\\RecycleSystem\\RecycleSystem.Ulitity\\RecycleSystem.Ulitity.csproj",
   "expectedPackageFiles": [
     "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder\\microsoft.netcore.platforms\\2.0.0\\microsoft.netcore.platforms.2.0.0.nupkg.sha512",
     "C:\\Users\\Administrator\\.nuget\\packages\\microsoft.win32.systemevents\\4.5.0\\microsoft.win32.systemevents.4.5.0.nupkg.sha512",

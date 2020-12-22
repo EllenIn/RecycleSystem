@@ -7300,11 +7300,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\Administrator\\Desktop\\RecycleSystem\\RecycleSystem.DataEntity\\RecycleSystem.DataEntity.csproj",
+      "projectUniqueName": "E:\\Senkuu\\RecycleSystem\\RecycleSystem.DataEntity\\RecycleSystem.DataEntity.csproj",
       "projectName": "RecycleSystem.DataEntity",
-      "projectPath": "C:\\Users\\Administrator\\Desktop\\RecycleSystem\\RecycleSystem.DataEntity\\RecycleSystem.DataEntity.csproj",
+      "projectPath": "E:\\Senkuu\\RecycleSystem\\RecycleSystem.DataEntity\\RecycleSystem.DataEntity.csproj",
       "packagesPath": "C:\\Users\\Administrator\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\Administrator\\Desktop\\RecycleSystem\\RecycleSystem.DataEntity\\obj\\",
+      "outputPath": "E:\\Senkuu\\RecycleSystem\\RecycleSystem.DataEntity\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Microsoft\\Xamarin\\NuGet\\",

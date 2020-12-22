@@ -34,11 +34,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\Administrator\\Desktop\\RecycleSystem\\RecycleSystem.IService\\RecycleSystem.IService.csproj",
+      "projectUniqueName": "E:\\Senkuu\\RecycleSystem\\RecycleSystem.IService\\RecycleSystem.IService.csproj",
       "projectName": "RecycleSystem.IService",
-      "projectPath": "C:\\Users\\Administrator\\Desktop\\RecycleSystem\\RecycleSystem.IService\\RecycleSystem.IService.csproj",
+      "projectPath": "E:\\Senkuu\\RecycleSystem\\RecycleSystem.IService\\RecycleSystem.IService.csproj",
       "packagesPath": "C:\\Users\\Administrator\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\Administrator\\Desktop\\RecycleSystem\\RecycleSystem.IService\\obj\\",
+      "outputPath": "E:\\Senkuu\\RecycleSystem\\RecycleSystem.IService\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Microsoft\\Xamarin\\NuGet\\",
@@ -59,8 +59,8 @@
       "frameworks": {
         "netcoreapp3.1": {
           "projectReferences": {
-            "C:\\Users\\Administrator\\Desktop\\RecycleSystem\\RecycleSystem.Data\\RecycleSystem.Data.csproj": {
-              "projectPath": "C:\\Users\\Administrator\\Desktop\\RecycleSystem\\RecycleSystem.Data\\RecycleSystem.Data.csproj"
+            "E:\\Senkuu\\RecycleSystem\\RecycleSystem.Data\\RecycleSystem.Data.csproj": {
+              "projectPath": "E:\\Senkuu\\RecycleSystem\\RecycleSystem.Data\\RecycleSystem.Data.csproj"
             }
           }
         }

@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "wem9hno1pvcsU0G7e9sattgHN4NbjU3JuBhEpTo0FFnoNNECrP5Z6aJpYuF5gcbEHc5OmHHf4oJuortOYBXSng==",
+  "dgSpecHash": "0ogVqBfYe2FnqElr8OiMCqKbKjnk4kObFOj/EzB2MyACmhEzLJM3Qn9XgdJ1uy1Ok1Ce+ls3EMzr/BDCi5NuUw==",
   "success": true,
-  "projectFilePath": "C:\\Users\\Administrator\\Desktop\\RecycleSystem\\RecycleSystem.Service\\RecycleSystem.Service.csproj",
+  "projectFilePath": "E:\\Senkuu\\RecycleSystem\\RecycleSystem.Service\\RecycleSystem.Service.csproj",
   "expectedPackageFiles": [
     "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder\\microsoft.csharp\\4.5.0\\microsoft.csharp.4.5.0.nupkg.sha512",
     "C:\\Users\\Administrator\\.nuget\\packages\\microsoft.data.sqlclient\\2.0.1\\microsoft.data.sqlclient.2.0.1.nupkg.sha512",

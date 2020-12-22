@@ -34,3 +34,15 @@ C:\Users\Administrator\Desktop\RecycleSystem\RecycleSystem.DataEntity\obj\Debug\
 C:\Users\Administrator\Desktop\RecycleSystem\RecycleSystem.DataEntity\obj\Debug\netcoreapp3.1\RecycleSystem.DataEntity.dll
 C:\Users\Administrator\Desktop\RecycleSystem\RecycleSystem.DataEntity\obj\Debug\netcoreapp3.1\RecycleSystem.DataEntity.pdb
 C:\Users\Administrator\Desktop\RecycleSystem\RecycleSystem.DataEntity\obj\Debug\netcoreapp3.1\RecycleSystem.DataEntity.genruntimeconfig.cache
+E:\Senkuu\RecycleSystem\RecycleSystem.DataEntity\obj\Debug\netcoreapp3.1\RecycleSystem.DataEntity.csprojAssemblyReference.cache
+E:\Senkuu\RecycleSystem\RecycleSystem.DataEntity\obj\Debug\netcoreapp3.1\RecycleSystem.DataEntity.AssemblyInfoInputs.cache
+E:\Senkuu\RecycleSystem\RecycleSystem.DataEntity\obj\Debug\netcoreapp3.1\RecycleSystem.DataEntity.AssemblyInfo.cs
+E:\Senkuu\RecycleSystem\RecycleSystem.DataEntity\obj\Debug\netcoreapp3.1\RecycleSystem.DataEntity.csproj.CoreCompileInputs.cache
+E:\Senkuu\RecycleSystem\RecycleSystem.DataEntity\obj\Debug\netcoreapp3.1\RecycleSystem.DataEntity.dll
+E:\Senkuu\RecycleSystem\RecycleSystem.DataEntity\obj\Debug\netcoreapp3.1\RecycleSystem.DataEntity.pdb
+E:\Senkuu\RecycleSystem\RecycleSystem.DataEntity\bin\Debug\netcoreapp3.1\RecycleSystem.DataEntity.deps.json
+E:\Senkuu\RecycleSystem\RecycleSystem.DataEntity\bin\Debug\netcoreapp3.1\RecycleSystem.DataEntity.runtimeconfig.json
+E:\Senkuu\RecycleSystem\RecycleSystem.DataEntity\bin\Debug\netcoreapp3.1\RecycleSystem.DataEntity.runtimeconfig.dev.json
+E:\Senkuu\RecycleSystem\RecycleSystem.DataEntity\bin\Debug\netcoreapp3.1\RecycleSystem.DataEntity.dll
+E:\Senkuu\RecycleSystem\RecycleSystem.DataEntity\bin\Debug\netcoreapp3.1\RecycleSystem.DataEntity.pdb
+E:\Senkuu\RecycleSystem\RecycleSystem.DataEntity\obj\Debug\netcoreapp3.1\RecycleSystem.DataEntity.genruntimeconfig.cache
