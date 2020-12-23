@@ -726,3 +726,7 @@ E:\Senkuu\RecycleSystem\RecycleSystem.MVC\obj\Debug\netcoreapp3.1\staticwebasset
 E:\Senkuu\RecycleSystem\RecycleSystem.MVC\obj\Debug\netcoreapp3.1\RecycleSystem.MVC.dll
 E:\Senkuu\RecycleSystem\RecycleSystem.MVC\obj\Debug\netcoreapp3.1\RecycleSystem.MVC.pdb
 E:\Senkuu\RecycleSystem\RecycleSystem.MVC\obj\Debug\netcoreapp3.1\RecycleSystem.MVC.genruntimeconfig.cache
+E:\Senkuu\RecycleSystem\RecycleSystem.MVC\obj\Debug\netcoreapp3.1\Razor\Views\OrderManage\VerifyOrders.cshtml.g.cs
+E:\Senkuu\RecycleSystem\RecycleSystem.MVC\obj\Debug\netcoreapp3.1\Razor\Views\WareHouse\ViewAll.cshtml.g.cs
+E:\Senkuu\RecycleSystem\RecycleSystem.MVC\obj\Debug\netcoreapp3.1\Razor\Views\OrderManage\ViewReleasedOrders.cshtml.g.cs
+E:\Senkuu\RecycleSystem\RecycleSystem.MVC\obj\Debug\netcoreapp3.1\Razor\Views\OrderManage\ReleaseOrder.cshtml.g.cs

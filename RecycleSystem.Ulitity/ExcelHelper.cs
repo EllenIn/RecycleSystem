@@ -61,6 +61,26 @@ namespace Senkuu.MaterialSystem.Utility
                             string cellValue = cell.StringCellValue.Trim();
                             if (!string.IsNullOrEmpty(cellValue))
                             {
+                                if (cellValue=="物品编号")
+                                {
+                                    cellValue = "InstanceID";
+                                }
+                                if (cellValue == "类别")
+                                {
+                                    cellValue = "CategoryID";
+                                }
+                                if (cellValue == "物品名")
+                                {
+                                    cellValue = "Name";
+                                }
+                                if (cellValue == "数量")
+                                {
+                                    cellValue = "Num";
+                                }
+                                if (cellValue == "单位")
+                                {
+                                    cellValue = "Unit";
+                                }
                                 DataColumn dataColumn = new DataColumn(cellValue);
                                 dataTable.Columns.Add(dataColumn);
                             }

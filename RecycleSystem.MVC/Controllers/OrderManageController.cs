@@ -24,14 +24,14 @@ namespace RecycleSystem.MVC.Controllers
             //未受理订单页面由员工可访问查看
             return View();
         }
-        public string GetUnacceptOrders(int page,int limit,string queryinfo)
+        public string GetUnacceptOrders(int page,int limit,string queryInfo)
         {
-            if (!string.IsNullOrEmpty(queryinfo))
+            if (!string.IsNullOrEmpty(queryInfo))
             {
-                queryinfo = queryinfo.Trim();
+                queryInfo = queryInfo.Trim();
             }
             int count;
-            IEnumerable<DemandOrderOutput> demandOrders = _orderManageService.GetOrders(page, limit, out count, queryinfo);
+            IEnumerable<DemandOrderOutput> demandOrders = _orderManageService.GetOrders(page, limit, out count, queryInfo);
             DataResult<IEnumerable<DemandOrderOutput>> data = new DataResult<IEnumerable<DemandOrderOutput>>
             {
                 msg = "获取成功！",
@@ -46,14 +46,14 @@ namespace RecycleSystem.MVC.Controllers
         {
             return View();
         }
-        public string GetRunningOrders(int page, int limit, string queryinfo)
+        public string GetRunningOrders(int page, int limit, string queryInfo)
         {
-            if (!string.IsNullOrEmpty(queryinfo))
+            if (!string.IsNullOrEmpty(queryInfo))
             {
-                queryinfo = queryinfo.Trim();
+                queryInfo = queryInfo.Trim();
             }
             int count;
-            IEnumerable<DemandOrderOutput> runningOrders = _orderManageService.GetRuningOrder(page, limit, out count, queryinfo);
+            IEnumerable<DemandOrderOutput> runningOrders = _orderManageService.GetRuningOrder(page, limit, out count, queryInfo);
             DataResult<IEnumerable<DemandOrderOutput>> data = new DataResult<IEnumerable<DemandOrderOutput>>
             {
                 msg = "获取成功！",
@@ -67,14 +67,14 @@ namespace RecycleSystem.MVC.Controllers
         {
             return View();
         }
-        public string GetFinishedOrder(int page, int limit, string queryinfo)
+        public string GetFinishedOrder(int page, int limit, string queryInfo)
         {
-            if (!string.IsNullOrEmpty(queryinfo))
+            if (!string.IsNullOrEmpty(queryInfo))
             {
-                queryinfo = queryinfo.Trim();
+                queryInfo = queryInfo.Trim();
             }
             int count;
-            IEnumerable<DemandOrderOutput> finishedOrder = _orderManageService.GetFinishedOrder(page, limit, out count, queryinfo);
+            IEnumerable<DemandOrderOutput> finishedOrder = _orderManageService.GetFinishedOrder(page, limit, out count, queryInfo);
             DataResult<IEnumerable<DemandOrderOutput>> data = new DataResult<IEnumerable<DemandOrderOutput>>
             {
                 msg = "获取成功！",
@@ -109,6 +109,58 @@ namespace RecycleSystem.MVC.Controllers
             }
             _orderManageService.AcceptOrder(oid, userId, out message);
             return Json(message);
+        }
+        public IActionResult VerifyOrders()
+        {
+            return View();
+        }
+        public string VerifyGetUnVerifyOrderList(int page, int limit, string queryInfo)
+        {
+            if (!string.IsNullOrEmpty(queryInfo))
+            {
+                queryInfo = queryInfo.Trim();
+            }
+            int count;
+            IEnumerable<OrderOutput> Orders = _orderManageService.GetUnVerifyOrderList(page, limit, out count, queryInfo);
+            DataResult<IEnumerable<OrderOutput>> data = new DataResult<IEnumerable<OrderOutput>>
+            {
+                msg = "获取成功！",
+                code = 0,
+                count = count,
+                data = Orders
+            };
+            return JsonNetHelper.SerialzeoJsonForCamelCase(data);
+        }
+        public IActionResult ViewReleasedOrders()
+        {
+            return View();
+        }
+        public string GetMyOrders(int page, int limit, string queryInfo)
+        {
+            string userId = HttpContext.Session.GetString("UserId");
+            if (string.IsNullOrEmpty(userId))
+            {
+                return "未登录！或登录已失效";
+            }
+            if (!string.IsNullOrEmpty(queryInfo))
+            {
+                queryInfo = queryInfo.Trim();
+            }
+            int count;
+            IEnumerable<DemandOrderOutput> Orders = _orderManageService.GetMyDemandOrders(page, limit, out count, queryInfo,userId);
+            DataResult<IEnumerable<DemandOrderOutput>> data = new DataResult<IEnumerable<DemandOrderOutput>>
+            {
+                msg = "获取成功！",
+                code = 0,
+                count = count,
+                data = Orders
+            };
+            return JsonNetHelper.SerialzeoJsonForCamelCase(data);
+        }
+
+        public IActionResult ReleaseOrder()
+        {
+            return View();
         }
     }
 }

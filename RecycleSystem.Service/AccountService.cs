@@ -44,29 +44,31 @@ namespace RecycleSystem.Service
                                               {
                                                   c.RoleId
                                               }).Select(s => s.RoleId).ToList();
-                LoginOutput outputs = (from a in types
-                                       join b in infos on a.Id equals b.UserTypeId into join_a
-                                       from c in join_a.DefaultIfEmpty()
-                                       join d in departments on c.DepartmentId equals d.DepartmentId
-                                       where c.UserId == user.UserId
-                                       select new LoginOutput
-                                       {
-                                           Id = c.Id,
-                                           UserTypeName = a.TypeName,
-                                           DepartmentId = d.DepartmentId,
-                                           DepartmentName = d.DepartmentName,
-                                           Email = c.Email,
-                                           Tel = c.Tel,
-                                           AddTime = c.AddTime,
-                                           DelFlag = c.DelFlag,
-                                           EnterpriseName = c.EnterpriseName,
-                                           Gender = c.Gender,
-                                           Token = c.Token,
-                                           UserId = c.UserId,
-                                           UserName = c.UserName,
-                                           //RoleName = roleName,
-                                           //RoleId = roleId
-                                       }).FirstOrDefault();
+                string userType = types.Where(t => t.Id == user.UserTypeId).Select(s => s.TypeName).FirstOrDefault();
+                string departmentName = departments.Where(d => d.DepartmentId == user.DepartmentId).Select(s => s.DepartmentName).FirstOrDefault();
+                //if (string.IsNullOrEmpty(departmentName))
+                //{
+                //    departmentName = "";
+                //}
+                LoginOutput outputs = new LoginOutput
+                {
+                    Id = user.Id,
+                    UserTypeName = userType,
+                    DepartmentId = user.DepartmentId,
+                    DepartmentName = departmentName,
+                    Email = user.Email,
+                    Tel = user.Tel,
+                    AddTime = user.AddTime,
+                    DelFlag = user.DelFlag,
+                    EnterpriseName = user.EnterpriseName,
+                    Gender = user.Gender,
+                    Token = user.Token,
+                    UserId = user.UserId,
+                    UserName = user.UserName,
+                    //RoleName = roleName,
+                    //RoleId = roleId
+                };
+
                 return outputs;
             }
             return null;

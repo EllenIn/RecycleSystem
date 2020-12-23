@@ -34,3 +34,15 @@ E:\MyProject\RecycleSystem\RecycleSystem.IService\obj\Debug\netcoreapp3.1\Recycl
 E:\MyProject\RecycleSystem\RecycleSystem.IService\obj\Debug\netcoreapp3.1\RecycleSystem.IService.csproj.CopyComplete
 E:\MyProject\RecycleSystem\RecycleSystem.IService\obj\Debug\netcoreapp3.1\RecycleSystem.IService.dll
 E:\MyProject\RecycleSystem\RecycleSystem.IService\obj\Debug\netcoreapp3.1\RecycleSystem.IService.pdb
+E:\Senkuu\RecycleSystem\RecycleSystem.IService\bin\Debug\netcoreapp3.1\RecycleSystem.IService.deps.json
+E:\Senkuu\RecycleSystem\RecycleSystem.IService\bin\Debug\netcoreapp3.1\RecycleSystem.IService.dll
+E:\Senkuu\RecycleSystem\RecycleSystem.IService\bin\Debug\netcoreapp3.1\RecycleSystem.IService.pdb
+E:\Senkuu\RecycleSystem\RecycleSystem.IService\bin\Debug\netcoreapp3.1\RecycleSystem.Data.dll
+E:\Senkuu\RecycleSystem\RecycleSystem.IService\bin\Debug\netcoreapp3.1\RecycleSystem.Data.pdb
+E:\Senkuu\RecycleSystem\RecycleSystem.IService\obj\Debug\netcoreapp3.1\RecycleSystem.IService.csprojAssemblyReference.cache
+E:\Senkuu\RecycleSystem\RecycleSystem.IService\obj\Debug\netcoreapp3.1\RecycleSystem.IService.AssemblyInfoInputs.cache
+E:\Senkuu\RecycleSystem\RecycleSystem.IService\obj\Debug\netcoreapp3.1\RecycleSystem.IService.AssemblyInfo.cs
+E:\Senkuu\RecycleSystem\RecycleSystem.IService\obj\Debug\netcoreapp3.1\RecycleSystem.IService.csproj.CoreCompileInputs.cache
+E:\Senkuu\RecycleSystem\RecycleSystem.IService\obj\Debug\netcoreapp3.1\RecycleSystem.IService.csproj.CopyComplete
+E:\Senkuu\RecycleSystem\RecycleSystem.IService\obj\Debug\netcoreapp3.1\RecycleSystem.IService.dll
+E:\Senkuu\RecycleSystem\RecycleSystem.IService\obj\Debug\netcoreapp3.1\RecycleSystem.IService.pdb

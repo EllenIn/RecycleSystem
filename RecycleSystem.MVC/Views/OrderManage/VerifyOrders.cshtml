@@ -1,6 +1,6 @@
 ﻿
 @{
-    ViewData["Title"] = "用户信息管理";
+    ViewData["Title"] = "订单完成审核";
     Layout = "~/Views/Shared/_MyLayout.cshtml";
 }
 
@@ -11,15 +11,12 @@
 
 </div>
 
-<table class="layui-hide" id="userList" lay-filter="userList"></table>
+<table class="layui-hide" id="orderList" lay-filter="orderList"></table>
 
 <script type="text/html" id="toolbarDemo">
     <div class="layui-btn-container">
-        <button class="layui-btn layui-btn-sm" onclick="btn_add()"><i class="layui-icon"></i>添加用户信息</button>
-        <button class="layui-btn layui-btn-sm" lay-event="update"><i class="layui-icon"></i>修改选中信息</button>
-        @*<button class="layui-btn layui-btn-sm" lay-event="delete"><i class="layui-icon"></i>删除选中用户</button>*@
-        <button class="layui-btn layui-btn-sm layui-btn-warm" lay-event="repwd"><i class="layui-icon"></i>重置密码</button>
-        <button class="layui-btn layui-btn-sm   layui-btn-danger" lay-event="checkrole"><i class="layui-icon"></i>分配角色</button>
+        <button class="layui-btn layui-btn-sm" lay-event="view"><i class="layui-icon"></i>查看订单</button>
+        <button class="layui-btn layui-btn-sm layui-btn-warm" lay-event="approval"><i class="layui-icon"></i>批量确认订单</button>
     </div>
 </script>
 
@@ -28,18 +25,14 @@
     <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
 </script>
 
-<!-- 注意：如果你直接复制所有代码到本地，上述js路径需要改成你本地的 -->
-<script type="text/html" id="userState">
-    <input type="checkbox" value="{{d.userId}}" name="open" lay-skin="switch" lay-filter="changeState" lay-text="在用|禁用" {{ d.delFlag == false ? 'checked' : '' }}>
-</script>
 <script>
     var table; //放置全局中，方便后续使用
     layui.use('table', function () {
         table = layui.table;
         var form = layui.form;
         table.render({
-            elem: '#userList'
-            , url: '/UserManage/GetUserListJson'
+            elem: '#orderList'
+            , url: '/OrderManage/VerifyGetUnVerifyOrderList'
             , toolbar: '#toolbarDemo' //开启头部工具栏，并为其绑定左侧模板
             , defaultToolbar: ['filter', 'exports', 'print', { //自定义头部工具栏右侧图标。如无需自定义，去除该参数即可
                 title: '提示'
@@ -58,47 +51,22 @@
             , title: '用户数据表'
             , cols: [[
                 { type: 'checkbox', fixed: 'left' }
-                , { field: 'id', title: 'ID', width: 80, fixed: 'left', unresize: true, sort: false }
-                , { field: 'userId', title: '用户账号', width: 100, edit: 'text' }
-                , { field: 'userName', title: '用户名', width: 120, edit: 'text' }
-                , { field: 'tel', title: '电话号码', width: 150, edit: 'text', sort: false }
-                , { field: 'email', title: '邮箱', width: 250 }
-                , { field: 'roleName', title: '角色', width: 350 }
-                , { field: 'departmentName', title: '所属部门', width: 180 }
-                , {
-                    field: 'gender', title: '性别', width: 80, sort: false, templet: function (res) {
-                        if (res.gender == false) {
-                            return "女"
-                        } else {
-
-                            return "男"
-                        }
-                    }
-                }
+                , { field: 'instanceId', title: '订单编号', width: 300 }
+                , { field: 'enterpriseID', title: '订单发起者', width: 120 }
+                , { field: 'enterpriseName', title: '所属公司', width: 250 }
+                , { field: 'name', title: '物品名', width: 150, sort: false }
+                , { field: 'num', title: '数量', width: 80 }
+                , { field: 'unit', title: '单位', width: 80 }
+                , { field: 'categoryName', title: '类别', width: 180 }
+                , { field: 'originalOrder', title: '原订单号', width: 300, sort: false  }
                 , { field: 'addTime', title: '添加时间', width: 200 }
-                , { field: 'delFlag', title: '用户状态', width: 130, sort: false, templet: '#userState' }
             ]]
             , page: true
             , limit: 10
             , limits: [10, 20, 25, 30, 35, 40, 45, 50, 100]
         });
-        //监听状态操作
-        form.on('switch(changeState)', function (obj) {
-            //layer.tips(this.value + ' ' + this.name + '：' + obj.elem.checked, obj.othis);
-            $.ajax({
-                url: "/UserManage/ChangeState",
-                type: "post",
-                data: {
-                    id: this.value
-                },
-                success: function (res) {
-                    layer.alert(res);
-                    btn_search();
-                }
-            })
-        });
         //头工具栏事件
-        table.on('toolbar(userList)', function (obj) {
+        table.on('toolbar(orderList)', function (obj) {
             debugger;
             var checkStatus = table.checkStatus(obj.config.id);
             switch (obj.event) {
@@ -113,7 +81,7 @@
                     };
 
                     $.ajax({
-                        url: "/UserManage/Repwd",
+                        url: "/OrderManage/Approval",
                         type: "post",
                         data: {
                             Id: Id
@@ -136,7 +104,7 @@
                                 shade: 0.8,
                                 maxmin: true, //开启最大化最小化按钮
                                 area: ['893px', '600px'],
-                                content: '/UserManage/Update?Id=' + id,
+                                content: '/OrderManage/View?Id=' + id,
                                 end: function () {
                                     btn_search();
                                 }
@@ -145,7 +113,7 @@
                     } else {
                         return layer.alert("必须选中一条且只能选中一条！")
                     }
-                    
+
                     break;
                 //case 'delete':
                 //    var data = checkStatus.data[0].id;
@@ -198,8 +166,8 @@
         var selectInfo = $("#txt_Query").val();
 
         //重新加载表格，并把文本框的内容传给后台
-        table.reload('userList', {
-            url: '/UserManage/GetUserListJson',
+        table.reload('orderList', {
+            url: '/OrderManage/VerifyGetUnVerifyOrderList',
             page: {
                 curr: 1//从第一页开始（很关键）
             },
@@ -208,18 +176,4 @@
             }
         });
     };
-    btn_add = function () {
-        debugger;
-        layui.use('layer', function () {
-            layer.open({
-                type: 2,
-                title: '添加用户',
-                shade: 0.8,
-                maxmin: true, //开启最大化最小化按钮
-                area: ['893px', '600px'],
-                content: '/UserManage/AddUserPage'
-            });
-        })
-    };
 </script>
-

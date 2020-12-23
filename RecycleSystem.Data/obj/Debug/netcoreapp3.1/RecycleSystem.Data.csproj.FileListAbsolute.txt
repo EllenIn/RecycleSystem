@@ -25,3 +25,12 @@ E:\MyProject\RecycleSystem\RecycleSystem.Data\obj\Debug\netcoreapp3.1\RecycleSys
 E:\MyProject\RecycleSystem\RecycleSystem.Data\obj\Debug\netcoreapp3.1\RecycleSystem.Data.csproj.CoreCompileInputs.cache
 E:\MyProject\RecycleSystem\RecycleSystem.Data\obj\Debug\netcoreapp3.1\RecycleSystem.Data.dll
 E:\MyProject\RecycleSystem\RecycleSystem.Data\obj\Debug\netcoreapp3.1\RecycleSystem.Data.pdb
+E:\Senkuu\RecycleSystem\RecycleSystem.Data\bin\Debug\netcoreapp3.1\RecycleSystem.Data.deps.json
+E:\Senkuu\RecycleSystem\RecycleSystem.Data\bin\Debug\netcoreapp3.1\RecycleSystem.Data.dll
+E:\Senkuu\RecycleSystem\RecycleSystem.Data\bin\Debug\netcoreapp3.1\RecycleSystem.Data.pdb
+E:\Senkuu\RecycleSystem\RecycleSystem.Data\obj\Debug\netcoreapp3.1\RecycleSystem.Data.csprojAssemblyReference.cache
+E:\Senkuu\RecycleSystem\RecycleSystem.Data\obj\Debug\netcoreapp3.1\RecycleSystem.Data.AssemblyInfoInputs.cache
+E:\Senkuu\RecycleSystem\RecycleSystem.Data\obj\Debug\netcoreapp3.1\RecycleSystem.Data.AssemblyInfo.cs
+E:\Senkuu\RecycleSystem\RecycleSystem.Data\obj\Debug\netcoreapp3.1\RecycleSystem.Data.csproj.CoreCompileInputs.cache
+E:\Senkuu\RecycleSystem\RecycleSystem.Data\obj\Debug\netcoreapp3.1\RecycleSystem.Data.dll
+E:\Senkuu\RecycleSystem\RecycleSystem.Data\obj\Debug\netcoreapp3.1\RecycleSystem.Data.pdb
