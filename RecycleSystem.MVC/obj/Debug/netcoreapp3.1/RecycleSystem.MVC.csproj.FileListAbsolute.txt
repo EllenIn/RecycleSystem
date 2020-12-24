@@ -733,3 +733,5 @@ E:\Senkuu\RecycleSystem\RecycleSystem.MVC\obj\Debug\netcoreapp3.1\Razor\Views\Or
 E:\Senkuu\RecycleSystem\RecycleSystem.MVC\obj\Debug\netcoreapp3.1\Razor\Views\CategoryManage\Index.cshtml.g.cs
 E:\Senkuu\RecycleSystem\RecycleSystem.MVC\obj\Debug\netcoreapp3.1\Razor\Views\OrderManage\ViewAllOrders.cshtml.g.cs
 E:\Senkuu\RecycleSystem\RecycleSystem.MVC\obj\Debug\netcoreapp3.1\Razor\Views\FinancialManage\Bills.cshtml.g.cs
+E:\Senkuu\RecycleSystem\RecycleSystem.MVC\obj\Debug\netcoreapp3.1\Razor\Views\CategoryManage\Update.cshtml.g.cs
+E:\Senkuu\RecycleSystem\RecycleSystem.MVC\obj\Debug\netcoreapp3.1\Razor\Views\CategoryManage\AddCategoryPage.cshtml.g.cs

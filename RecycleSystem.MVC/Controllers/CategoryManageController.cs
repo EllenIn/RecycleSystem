@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using RecycleSystem.Data.Data.CategoryDTO;
 using RecycleSystem.IService;
@@ -41,6 +42,48 @@ namespace RecycleSystem.MVC.Controllers
         public JsonResult GetCategories()
         {
             return Json(_categoryManageService.GetCategories());
+        }
+        public IActionResult Update(int id)
+        {
+            HttpContext.Session.SetInt32("UpdateId", id);
+            return View();
+        }
+        [HttpPost]
+        public JsonResult GetCategoryById()
+        {
+            int id = (int)HttpContext.Session.GetInt32("UpdateId");
+            CategoryOutput output = _categoryManageService.GetCategory(id);
+            HttpContext.Session.Remove("UpdateId");
+            return Json(output);
+        }
+        [HttpPost]
+        public JsonResult Update(CategoryInput categoryInput)
+        {
+            string msg;
+            _categoryManageService.UpdateCategoryById(categoryInput, out msg);
+            return Json(msg);
+        }
+        public JsonResult ChangeState(int id)
+        {
+            string msg;
+            _categoryManageService.BanCategory(id,out msg);
+            return Json(msg);
+        }
+        public IActionResult AddCategoryPage()
+        {
+            return View();
+        }
+        [HttpPost]
+        public JsonResult AddCategory(CategoryInput categoryInput)
+        {
+            string msg;
+            if (categoryInput.CurrentPrice==null)
+            {
+                msg = "你输入的不是数字噢！检查一下吧！";
+                return Json(msg);
+            }
+            _categoryManageService.AddCategory(categoryInput, out msg);
+            return Json(msg);
         }
     }
 }

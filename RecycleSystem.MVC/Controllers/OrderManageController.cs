@@ -213,5 +213,9 @@ namespace RecycleSystem.MVC.Controllers
             };
             return JsonNetHelper.SerialzeoJsonForCamelCase(data);
         }
+        public IActionResult SpecialRequest()
+        {
+            return View();
+        }
     }
 }

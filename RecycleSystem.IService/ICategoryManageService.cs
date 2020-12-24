@@ -9,8 +9,9 @@ namespace RecycleSystem.IService
     {
         IEnumerable<CategoryOutput> GetCategories(int page, int limit, out int count, string queryInfo);
         IEnumerable<CategoryOutput> GetCategories();
+        CategoryOutput GetCategory(int id);
         bool AddCategory(CategoryInput categoryInput,out string msg);
-        bool BanCategory(CategoryInput categoryInput, out string msg);
+        bool BanCategory(int id, out string msg);
         bool UpdateCategoryById(CategoryInput categoryInput, out string msg);
     }
 }

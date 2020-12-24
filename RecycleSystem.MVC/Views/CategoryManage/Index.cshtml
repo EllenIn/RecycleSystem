@@ -13,6 +13,12 @@
 
 <table class="layui-hide" id="categoryList" lay-filter="categoryList"></table>
 
+<script type="text/html" id="toolbarDemo">
+    <div class="layui-btn-container">
+        <button class="layui-btn layui-btn-sm" onclick="btn_add()"><i class="layui-icon"></i>添加类别</button>
+    </div>
+</script>
+
 <script type="text/html" id="operation">
     <div class="layui-row">
         <button class="layui-btn layui-btn-sm layui-btn-normal" lay-event="Modify"><i class="layui-icon"></i>修改</button>
@@ -22,7 +28,7 @@
 
 <!-- 注意：如果你直接复制所有代码到本地，上述js路径需要改成你本地的 -->
 <script type="text/html" id="statusId">
-    <input type="checkbox" value="{{d.categoryId}}" name="open" lay-skin="switch" lay-filter="changeState" lay-text="在用|禁用" {{ d.delFlag == false ? 'checked' : '' }}>
+    <input type="checkbox" value="{{d.id}}" name="open" lay-skin="switch" lay-filter="changeState" lay-text="在用|禁用" {{ d.delFlag == false ? 'checked' : '' }}>
 </script>
 <script>
     var table; //放置全局中，方便后续使用
@@ -32,6 +38,7 @@
         table.render({
             elem: '#categoryList'
             , url: '/CategoryManage/GetCategoriesList'
+            , toolbar: '#toolbarDemo' //开启头部工具栏，并为其绑定左侧模板
             , defaultToolbar: ['filter', 'exports', 'print', { //自定义头部工具栏右侧图标。如无需自定义，去除该参数即可
                 title: '提示'
                 , layEvent: 'LAYTABLE_TIPS'
@@ -48,12 +55,10 @@
             }
             , title: '用户数据表'
             , cols: [[
-                { type: 'checkbox', fixed: 'left' }
-                , { field: 'categoryId', title: '类别编号', width: 80, fixed: 'left', unresize: true, sort: false }
-                , { field: 'categoryName', title: '类别名', width: 100 }
-                , { field: 'currentPrice', title: '价钱', width: 120  }
-                , { field: 'category', title: '类型', width: 150,  sort: false }
-                , { field: 'unit', title: '单位', width: 50 }
+                  { field: 'categoryId', title: '类别编号', width: 200, fixed: 'left', unresize: true, sort: false }
+                , { field: 'categoryName', title: '类别名', width: 200 }
+                , { field: 'currentPrice', title: '价钱 (元)', width: 120  }
+                , { field: 'unit', title: '单位 (每斤)', width: 130 }
                 , { field: 'addTime', title: '添加时间', width: 200 }
                 , { field: 'DelFlag', title: '状态', width: 130, sort: false, templet: '#statusId' }
                 , { fixed: 'right', title: '操作', width: 180, align: 'center', toolbar: '#operation' }
@@ -68,7 +73,7 @@
                 url: "/CategoryManage/ChangeState",
                 type: "post",
                 data: {
-                    categoryId: this.value
+                    id: this.value
                 },
                 success: function (res) {
                     layer.alert(res);
@@ -76,6 +81,7 @@
                 }
             })
         });
+
         //操作栏事件
         table.on('tool(categoryList)', function (obj) {
             debugger;
@@ -119,5 +125,21 @@
                 queryInfo: selectInfo, //需传过去的值
             }
         });
+    };
+    btn_add = function () {
+        debugger;
+        layui.use('layer', function () {
+            layer.open({
+                type: 2,
+                title: '添加类目信息',
+                shade: 0.8,
+                maxmin: true, //开启最大化最小化按钮
+                area: ['893px', '600px'],
+                content: '/CategoryManage/AddCategoryPage',
+                end: function () {
+                    btn_search();
+                }
+            });
+        })
     };
 </script>
