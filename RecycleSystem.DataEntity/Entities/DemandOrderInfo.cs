@@ -17,5 +17,6 @@ namespace RecycleSystem.DataEntity.Entities
         public string UserId { get; set; }
         public DateTime? AddTime { get; set; }
         public int? Status { get; set; }
+        public bool DelFlag { get; set; }
     }
 }

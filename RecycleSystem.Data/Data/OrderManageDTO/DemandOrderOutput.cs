@@ -17,5 +17,6 @@ namespace RecycleSystem.Data.Data.OrderManageDTO
         public string EnterpriseName { get; set; }
         public DateTime? AddTime { get; set; }
         public int? Status { get; set; }
+        public bool DelFlag { get; set; }
     }
 }

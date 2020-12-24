@@ -13,7 +13,9 @@
     <link href="~/lib/layui/css/layui.css" rel="stylesheet" />
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <style>
-        *{margin:0 auto}
+        * {
+            margin: 0 auto
+        }
     </style>
 </head>
 <body>
@@ -35,13 +37,16 @@
                     </p>
                 </div>
             </li>
-            <li class="layui-timeline-item">
-                <i class="layui-icon layui-timeline-axis"></i>
-                <div class="layui-timeline-content layui-text">
-                    <h3 class="layui-timeline-title">订单执行人：@ViewBag.Order.Receiver</h3>
-                    <p>订单已被 @ViewBag.Order.Receiver 接取</p>
-                </div>
-            </li>
+            @if (!string.IsNullOrEmpty(ViewBag.Order.Receiver))
+            {
+                <li class="layui-timeline-item">
+                    <i class="layui-icon layui-timeline-axis"></i>
+                    <div class="layui-timeline-content layui-text">
+                        <h3 class="layui-timeline-title">订单执行人：@ViewBag.Order.Receiver</h3>
+                        <p>订单已被 @ViewBag.Order.Receiver 接取</p>
+                    </div>
+                </li>
+            }
             <li class="layui-timeline-item">
                 <i class="layui-icon layui-timeline-axis"></i>
                 <div class="layui-timeline-content layui-text">
@@ -64,6 +69,6 @@
             </li>
         </ul>
     </div>
-    
+
 </body>
 </html>

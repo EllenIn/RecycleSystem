@@ -23,7 +23,7 @@
                 </div>
                 <label class="layui-form-label">类别</label>
                 <div class="layui-input-inline">
-                    <select>
+                    <select name="CategoryId" id="Category">
                         <option value="">---请选择---</option>
                     </select>
                 </div>
@@ -36,7 +36,7 @@
                 </div>
                 <label class="layui-form-label">单位</label>
                 <div class="layui-input-inline">
-                    <select>
+                    <select name="Unit">
                         <option value="">---请选择---</option>
                         <option value="千克">千克</option>
                         <option value="吨">吨</option>
@@ -51,7 +51,18 @@
     </div>
     <script>
         $.ajax({
-            url:""
+            url: "/CategoryManage/GetCategories",
+            type: "post",
+            async: false,
+            success: function (res) {
+                var str = "";
+                $.each(res, function (index, i) {
+                    str += "<option value='" + i.categoryId + "'>";
+                    str += i.categoryName;
+                    str += "</option>";
+                })
+                $("#Category").append(str);
+            }
         })
         layui.use(['form'], function () {
             var form = layui.form;
@@ -67,7 +78,7 @@
                     url: "/OrderManage/ReleaseOrder",
                     type: "post",
                     data: {
-                        roleInput: data.field
+                        demandOrderInput: data.field
                     },
                     success: function (res) {
                         layer.alert(res);

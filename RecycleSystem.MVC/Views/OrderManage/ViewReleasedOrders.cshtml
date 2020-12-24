@@ -66,11 +66,11 @@
                 { type: 'checkbox', fixed: 'left' }
                 , { field: 'oid', title: '订单编号', width: 300, fixed: 'left' }
                 , { field: 'enterpriser', title: '发布者', width: 100 }
-                , { field: 'name', title: '物品名', width: 120  }
+                , { field: 'name', title: '物品名', width: 120 }
                 , { field: 'category', title: '类型', width: 150 }
                 , { field: 'num', title: '数量', width: 80 }
                 , { field: 'unit', title: '单位', width: 80 }
-                , { field: 'addTime', title: '添加时间', width: 100 }
+                , { field: 'addTime', title: '添加时间', width: 200 }
                 , { field: 'status', title: '状态', width: 130, sort: false, templet: '#statusId' }
                 , { field: 'receiver', title: '执行者', width: 130, sort: false }
                 , { fixed: 'right', title: '操作', width: 200, align: 'center', toolbar: '#operation' }
@@ -80,13 +80,12 @@
             , limits: [10, 20, 25, 30, 35, 40, 45, 50, 100]
         });
 
-        
+
         table.on('tool(orderList)', function (obj) {
             debugger;
-            var checkStatus = table.checkStatus(obj.data.id);
+            var data = obj.data;
             switch (obj.event) {
                 case 'View':
-                    var data = obj.data;
                     console.log(data);
                     layer.open({
                         type: 2,
@@ -97,6 +96,18 @@
                     });
                     break;
 
+                case 'withdrew':
+                    layer.confirm('确认撤销订单 ' + data.oid + ' 吗?', function (index) {
+                        $.ajax({
+                            url: "/OrderManage/WithdrewMyApplication",
+                            type: "post",
+                            data: { oid: data.oid },
+                            success: function (res) {
+                                return layer.alert(res);
+                            }
+                        })
+                    });
+                    break;
                 //自定义头工具栏右侧图标 - 提示
                 case 'LAYTABLE_TIPS':
                     layer.alert('这是工具栏右侧自定义的一个图标按钮');

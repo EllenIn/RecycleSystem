@@ -24,7 +24,7 @@ namespace RecycleSystem.MVC.Controllers
             //未受理订单页面由员工可访问查看
             return View();
         }
-        public string GetUnacceptOrders(int page,int limit,string queryInfo)
+        public string GetUnacceptOrders(int page, int limit, string queryInfo)
         {
             if (!string.IsNullOrEmpty(queryInfo))
             {
@@ -86,7 +86,7 @@ namespace RecycleSystem.MVC.Controllers
         }
         public IActionResult ViewOrder(string oid)
         {
-           ViewBag.Order =  _orderManageService.GetOrderByOID(oid);
+            ViewBag.Order = _orderManageService.GetOrderByOID(oid);
             return View();
         }
         public JsonResult AcceptOrder(string oid)
@@ -147,7 +147,7 @@ namespace RecycleSystem.MVC.Controllers
                 queryInfo = queryInfo.Trim();
             }
             int count;
-            IEnumerable<DemandOrderOutput> Orders = _orderManageService.GetMyDemandOrders(page, limit, out count, queryInfo,userId);
+            IEnumerable<DemandOrderOutput> Orders = _orderManageService.GetMyDemandOrders(page, limit, out count, queryInfo, userId);
             DataResult<IEnumerable<DemandOrderOutput>> data = new DataResult<IEnumerable<DemandOrderOutput>>
             {
                 msg = "获取成功！",
@@ -161,6 +161,57 @@ namespace RecycleSystem.MVC.Controllers
         public IActionResult ReleaseOrder()
         {
             return View();
+        }
+        [HttpPost]
+        public JsonResult ReleaseOrder(DemandOrderInput demandOrderInput)
+        {
+            string msg;
+            demandOrderInput.EnterpriseId = HttpContext.Session.GetString("UserId");
+            if (string.IsNullOrEmpty(demandOrderInput.EnterpriseId))
+            {
+                msg = "未登录！或登录已失效！";
+                return Json(msg);
+            }
+            if (string.IsNullOrEmpty(demandOrderInput.CategoryId) || string.IsNullOrEmpty(demandOrderInput.Unit))
+            {
+                msg = "必须选择类别与单位！";
+                return Json(msg);
+            }
+            if ((demandOrderInput.Name.Contains("铁") && demandOrderInput.Unit != "G1001")|| (demandOrderInput.Name.Contains("纸") && demandOrderInput.Unit != "G1002") || (demandOrderInput.Name.Contains("塑料") && demandOrderInput.Unit != "G1003") || (demandOrderInput.Name.Contains("玻璃瓶") && demandOrderInput.Unit != "G1004"))
+            {
+                msg = "所选类目不正确，不与物品们相匹配！";
+                return Json(msg);
+            }
+            _orderManageService.ReleaseOrder(demandOrderInput, out msg);
+            return Json(msg);
+        }
+        [HttpPost]
+        public JsonResult WithdrewMyApplication(string oid)
+        {
+            string msg;
+            _orderManageService.WithdrewMyApplication(oid, out msg);
+            return Json(msg);
+        }
+        public IActionResult ViewAllOrders()
+        {
+            return View();
+        }
+        public string GetAllOrdersList(int page, int limit, string queryInfo)
+        {
+            if (!string.IsNullOrEmpty(queryInfo))
+            {
+                queryInfo = queryInfo.Trim();
+            }
+            int count;
+            IEnumerable<DemandOrderOutput> demandOrders = _orderManageService.GetAllOrders(page, limit, out count, queryInfo);
+            DataResult<IEnumerable<DemandOrderOutput>> data = new DataResult<IEnumerable<DemandOrderOutput>>
+            {
+                msg = "获取成功！",
+                code = 0,
+                count = count,
+                data = demandOrders
+            };
+            return JsonNetHelper.SerialzeoJsonForCamelCase(data);
         }
     }
 }

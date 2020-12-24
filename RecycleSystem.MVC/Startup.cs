@@ -35,6 +35,8 @@ namespace RecycleSystem.MVC
             services.AddScoped<IRoleManageService, RoleManageService>();
             services.AddScoped<IOrderManageService, OrderManageService>();
             services.AddScoped<IWareHouseService, WareHouseService>();
+            services.AddScoped<ICategoryManageService, CategoryManageService>();
+            services.AddScoped<IFinancialManageService, FinancialManageService>();
 
             services.AddScoped<DbContext, RecycleSystemDBContext>();
             services.AddDbContext<RecycleSystemDBContext>(options =>
