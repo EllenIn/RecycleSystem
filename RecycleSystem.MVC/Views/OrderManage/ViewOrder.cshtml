@@ -60,9 +60,21 @@
                         {
                             <span style="color:orangered">进行中</span>
                         }
-                        else
+                        else if (ViewBag.Order.Status == 3)
                         {
                             <span style="color:greenyellow">已完成</span>
+                        }
+                        else if (ViewBag.Order.Status == 4)
+                        {
+                            <span style="color:red">撤销申请中</span>
+                        }
+                        else if (ViewBag.Order.Status == 5)
+                        {
+                            <span style="color:red">已驳回撤销申请</span>
+                        }
+                        else if (ViewBag.Order.Status == 6)
+                        {
+                            <span style="color:red">已撤销</span>
                         }
                     </p>
                 </div>

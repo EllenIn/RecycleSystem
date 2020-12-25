@@ -131,6 +131,7 @@ namespace RecycleSystem.MVC.Controllers
             };
             return JsonNetHelper.SerialzeoJsonForCamelCase(data);
         }
+        #region 发布需求订单、查看我的订单、撤销订单
         public IActionResult ViewReleasedOrders()
         {
             return View();
@@ -192,6 +193,7 @@ namespace RecycleSystem.MVC.Controllers
             _orderManageService.WithdrewMyApplication(oid, out msg);
             return Json(msg);
         }
+        #endregion
         public IActionResult ViewAllOrders()
         {
             return View();
@@ -213,9 +215,62 @@ namespace RecycleSystem.MVC.Controllers
             };
             return JsonNetHelper.SerialzeoJsonForCamelCase(data);
         }
+        #region 特殊请求撤销订单
         public IActionResult SpecialRequest()
         {
             return View();
         }
+        public string GetMyRuningOrders(int page, int limit, string queryInfo)
+        {
+            string userId = HttpContext.Session.GetString("UserId");
+            if (string.IsNullOrEmpty(userId))
+            {
+                return "未登录！或登录已失效";
+            }
+            if (!string.IsNullOrEmpty(queryInfo))
+            {
+                queryInfo = queryInfo.Trim();
+            }
+            int count;
+            IEnumerable<DemandOrderOutput> demandOrders = _orderManageService.GetMyRunningDemandOrders(page, limit, out count, queryInfo,userId);
+            DataResult<IEnumerable<DemandOrderOutput>> data = new DataResult<IEnumerable<DemandOrderOutput>>
+            {
+                msg = "获取成功！",
+                code = 0,
+                count = count,
+                data = demandOrders
+            };
+            return JsonNetHelper.SerialzeoJsonForCamelCase(data);
+        }
+        public IActionResult ApplyingWithdrew(string oid)
+        {
+            HttpContext.Session.SetString("OID", oid);
+            return View();
+        }
+        public JsonResult GetOrderInfoByOID()
+        {
+            string oid = HttpContext.Session.GetString("OID");
+            DemandOrderOutput output = _orderManageService.GetOrderByOID(oid);
+            HttpContext.Session.Remove("OID");
+            return Json(output);
+        }
+        public JsonResult WithdrewMyApplicationBySpecial(DemandOrderInput demandOrderInput)
+        {
+            string msg;
+            demandOrderInput.UserId = HttpContext.Session.GetString("UserId");
+            _orderManageService.WithdrewMyApplicationBySpecial(demandOrderInput, out msg);
+            return Json(msg);
+        }
+        public IActionResult ViewSpecialApplyingOrder(string oid)
+        {
+            ViewBag.Order = _orderManageService.GetOrderByOID(oid);
+            return View();
+        }
+        #endregion
+        public IActionResult ApprovalSpecialOrderWithdrew()
+        {
+            return View();
+        }
+
     }
 }

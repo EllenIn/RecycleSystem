@@ -15,7 +15,10 @@ namespace RecycleSystem.Ulitity
         {
             unAccept=1,
             Accepted,
-            Finished
+            Finished,
+            ApplyingCancel,
+            ForbinCancel,
+            Canceled
         }
         public enum PressStatus
         {
@@ -26,6 +29,17 @@ namespace RecycleSystem.Ulitity
         {
             Running,
             Finished
+        }
+        public enum WorkFlowType
+        {
+            SpecialWithdrew=1
+        }
+        public enum WorkFlowStatus
+        {
+            Applying=1,
+            Withdrew,
+            UnAccept,
+            Allow
         }
     }
 }

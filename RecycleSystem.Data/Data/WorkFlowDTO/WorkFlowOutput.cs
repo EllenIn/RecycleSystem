@@ -1,11 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Text;
 
-#nullable disable
-
-namespace RecycleSystem.DataEntity.Entities
+namespace RecycleSystem.Data.Data.WorkFlowDTO
 {
-    public partial class WorkFlow
+    public class WorkFlowOutput
     {
         public int Id { get; set; }
         public string InstanceId { get; set; }

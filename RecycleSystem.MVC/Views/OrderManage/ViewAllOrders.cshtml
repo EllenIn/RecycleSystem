@@ -17,23 +17,20 @@
 <!-- 注意：如果你直接复制所有代码到本地，上述js路径需要改成你本地的 -->
 <script type="text/html" id="statusId">
     {{#  if(d.status == 1){ }}
-    <span style="color: #F581B1;">未接单</span>
+    <span style="color: indianred;width:200px">未接单</span>
     {{#  } else if (d.status == 2){ }}
-    <span style="color:orangered">进行中</span>
+    <span style="color:orangered; width:200px;">进行中</span>
     {{#  } else if (d.status == 3){ }}
-    <span style="color:greenyellow">已完成</span>
+    <span style="color:red;width:200px">已完成</span>
+    {{#  } else if (d.status == 4){ }}
+    <span style="color:palevioletred;width:200px">撤销申请中</span>
+    {{#  } else if (d.status == 5){ }}
+    <span style="color:tomato;width:200px">已驳回撤销申请</span>
+    {{#  } else if (d.status == 6){ }}
+    <span style="color:gold;width:200px">已撤销</span>
     {{#  } }}
-
 </script>
 
-<script type="text/html" id="delFlag">
-    {{#  if(d.delFlag == true){ }}
-    <span style="color: #F581B1;">已撤销</span>
-    {{#  } else if (d.delFlag == false){ }}
-    <span style="color:orangered">正常</span>
-    {{#  } }}
-
-</script>
 <script>
     var table; //放置全局中，方便后续使用
     layui.use('table', function () {
@@ -67,7 +64,7 @@
                 , { field: 'unit', title: '单位', width: 80 }
                 , { field: 'addTime', title: '添加时间', width: 200 }
                 , { field: 'status', title: '订单状态', width: 130, sort: false, templet: '#statusId' }
-                , { field: 'delFlag', title: '状态', width: 130, sort: false, templet: '#delFlag' }
+                
             ]]
             , page: true
             , limit: 10

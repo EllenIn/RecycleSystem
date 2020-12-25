@@ -14,5 +14,6 @@ namespace RecycleSystem.DataEntity.Entities
         public string ReviewStatus { get; set; }
         public DateTime? ReviewTime { get; set; }
         public string NextReviewer { get; set; }
+        public bool isRead { get; set; }
     }
 }

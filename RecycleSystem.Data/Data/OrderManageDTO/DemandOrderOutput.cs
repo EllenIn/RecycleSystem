@@ -18,5 +18,6 @@ namespace RecycleSystem.Data.Data.OrderManageDTO
         public DateTime? AddTime { get; set; }
         public int? Status { get; set; }
         public bool DelFlag { get; set; }
+        public string CategoryId { get; set; }
     }
 }

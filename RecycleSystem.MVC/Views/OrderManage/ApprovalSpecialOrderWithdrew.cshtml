@@ -1,6 +1,5 @@
-﻿
-@{
-    ViewData["Title"] = "进行中的订单";
+﻿@{
+    ViewData["Title"] = "特殊请求订单";
     Layout = "~/Views/Shared/_MyLayout.cshtml";
 }
 
@@ -11,18 +10,15 @@
 
 </div>
 
+
 <table class="layui-hide" id="orderList" lay-filter="orderList"></table>
 
 <script type="text/html" id="operation">
     <div class="layui-row">
-        <button class="layui-btn layui-btn-sm layui-btn-normal" lay-event="View"><i class="layui-icon"></i>查看订单</button>
+        <button class="layui-btn layui-btn-sm layui-btn-normal" lay-event="ViewSpecial"><i class="layui-icon"></i>查看订单</button>
     </div>
 </script>
 
-<script type="text/html" id="barDemo">
-    <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
-    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
-</script>
 
 <!-- 注意：如果你直接复制所有代码到本地，上述js路径需要改成你本地的 -->
 <script type="text/html" id="statusId">
@@ -45,10 +41,10 @@
     var table; //放置全局中，方便后续使用
     layui.use('table', function () {
         table = layui.table;
-        var form = layui.form;
         table.render({
             elem: '#orderList'
-            , url: '/OrderManage/GetRunningOrders'
+            , url: '/OrderManage/GetRuningSpecialOrders'
+            , toolbar: '#toolbarDemo' //开启头部工具栏，并为其绑定左侧模板
             , defaultToolbar: ['filter', 'exports', 'print', { //自定义头部工具栏右侧图标。如无需自定义，去除该参数即可
                 title: '提示'
                 , layEvent: 'LAYTABLE_TIPS'
@@ -66,12 +62,12 @@
             , title: '用户数据表'
             , cols: [[
                 { type: 'checkbox', fixed: 'left' }
-                , { field: 'oid', title: 'ID', width: 80, fixed: 'left', unresize: true, sort: false }
+                , { field: 'oid', title: '订单编号', width: 300, fixed: 'left' }
                 , { field: 'enterpriser', title: '发布者', width: 100 }
-                , { field: 'name', title: '物品名', width: 120  }
-                , { field: 'category', title: '类型', width: 150,  sort: false }
-                , { field: 'num', title: '数量', width: 250 }
-                , { field: 'unit', title: '单位', width: 50 }
+                , { field: 'name', title: '物品名', width: 120 }
+                , { field: 'category', title: '类型', width: 150 }
+                , { field: 'num', title: '数量', width: 80 }
+                , { field: 'unit', title: '单位', width: 80 }
                 , { field: 'addTime', title: '添加时间', width: 200 }
                 , { field: 'status', title: '状态', width: 130, sort: false, templet: '#statusId' }
                 , { field: 'receiver', title: '执行者', width: 130, sort: false }
@@ -81,24 +77,22 @@
             , limit: 10
             , limits: [10, 20, 25, 30, 35, 40, 45, 50, 100]
         });
-        
-        //头工具栏事件
+
+
         table.on('tool(orderList)', function (obj) {
             debugger;
-            var checkStatus = table.checkStatus(obj.data.id);
+            var data = obj.data;
             switch (obj.event) {
-                case 'View':
-                    var data = obj.data;
+                case 'ViewSpecial':
                     console.log(data);
                     layer.open({
                         type: 2,
-                        title: "订单进度查看",
+                        title: "请求撤销的特殊订单查看",
                         shade: 0.8,
                         area: ['780px', '620px'],
-                        content: ['/OrderManage/ViewOrder?oid=' + data.oid + ''],
+                        content: ['/OrderManage/ViewSpecialApplyingOrder?oid=' + data.oid + ''],
                     });
                     break;
-
                 //自定义头工具栏右侧图标 - 提示
                 case 'LAYTABLE_TIPS':
                     layer.alert('这是工具栏右侧自定义的一个图标按钮');
@@ -113,7 +107,7 @@
 
         //重新加载表格，并把文本框的内容传给后台
         table.reload('orderList', {
-            url: '/OrderManage/GetRunningOrders',
+            url: '/OrderManage/GetRuningSpecialOrders',
             page: {
                 curr: 1//从第一页开始（很关键）
             },
@@ -123,6 +117,3 @@
         });
     };
 </script>
-
-
-

@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using RecycleSystem.Data.Data.OrderManageDTO;
 using RecycleSystem.Data.Data.WareHouseDTO;
+using RecycleSystem.Data.Data.WorkFlowDTO;
 using RecycleSystem.DataEntity.Entities;
 using RecycleSystem.IService;
 using RecycleSystem.Ulitity;
@@ -116,11 +117,58 @@ namespace RecycleSystem.Service
             return orderOutputs;
         }
 
+        public IEnumerable<WorkFlowOutput> GetFlowOutputs(int page, int limit, out int count, string queryInfo)
+        {
+            IQueryable<WorkFlow> workFlows = _dbContext.Set<WorkFlow>();
+            count = workFlows.Count();
+            IEnumerable<WorkFlowOutput> outputs = (from w in workFlows
+                                                   where w.InstanceId.Contains(queryInfo) || queryInfo == null
+                                                   select new WorkFlowOutput
+                                                   {
+                                                       Id = w.Id,
+                                                       InstanceId = w.InstanceId,
+                                                       OrderID = w.OrderID,
+                                                       Reason = w.Reason,
+                                                       Status = w.Status,
+                                                       TypeId = w.TypeId,
+                                                       UserId = w.UserId,
+                                                       CurrentReviewer = w.CurrentReviewer,
+                                                       AddTime = w.AddTime,
+                                                       isRead = w.isRead
+                                                   }).OrderBy(o => o.Id).Skip((page - 1) * limit).Take(limit).ToList();
+            return outputs;
+        }
+
         public IEnumerable<DemandOrderOutput> GetMyDemandOrders(int page, int limit, out int count, string queryInfo, string userId)
         {
             IQueryable<UserInfo> userInfos = _dbContext.Set<UserInfo>();
             IQueryable<Categorylnfo> categorylnfos = _dbContext.Set<Categorylnfo>();
-            IQueryable<DemandOrderInfo> orderInfos = _dbContext.Set<DemandOrderInfo>().Where(d => d.EnterpriseId == userId && d.DelFlag == false); // To Find The order which is applied by me
+            IQueryable<DemandOrderInfo> orderInfos = _dbContext.Set<DemandOrderInfo>().Where(d => d.EnterpriseId == userId); // To Find The order which is applied by me
+            count = orderInfos.Count();
+            IEnumerable<DemandOrderOutput> orderOutputs = (from a in orderInfos
+                                                           where a.Oid.Contains(queryInfo) || queryInfo == null
+                                                           select new DemandOrderOutput
+                                                           {
+                                                               Id = a.Id,
+                                                               Oid = a.Oid,
+                                                               Name = a.Name,
+                                                               Num = a.Num,
+                                                               Unit = a.Unit,
+                                                               Enterpriser = (from u in userInfos where u.UserId == a.EnterpriseId select new { u.UserName }).Select(s => s.UserName).FirstOrDefault(),
+                                                               Status = a.Status,
+                                                               AddTime = a.AddTime,
+                                                               Category = (from g in categorylnfos where g.CategoryId == a.CategoryId select new { g.CategoryName }).Select(s => s.CategoryName).FirstOrDefault(),
+                                                               Receiver = (from n in userInfos where n.UserId == a.UserId select new { n.UserName }).Select(s => s.UserName).FirstOrDefault(),
+                                                               EnterpriseName = (from n in userInfos where n.UserId == a.EnterpriseId select new { n.EnterpriseName }).Select(s => s.EnterpriseName).FirstOrDefault(),
+                                                           }).OrderBy(o => o.Id).Skip((page - 1) * limit).Take(limit).ToList();
+            return orderOutputs;
+        }
+
+        public IEnumerable<DemandOrderOutput> GetMyRunningDemandOrders(int page, int limit, out int count, string queryInfo, string userId)
+        {
+            IQueryable<UserInfo> userInfos = _dbContext.Set<UserInfo>();
+            IQueryable<Categorylnfo> categorylnfos = _dbContext.Set<Categorylnfo>();
+            IQueryable<DemandOrderInfo> orderInfos = _dbContext.Set<DemandOrderInfo>().Where(d => d.EnterpriseId == userId && d.DelFlag == false && d.Status == (int)TypeEnum.DemendOrderStatus.Accepted); // To Find The order which is applied by me and is runing
             count = orderInfos.Count();
             IEnumerable<DemandOrderOutput> orderOutputs = (from a in orderInfos
                                                            where a.Oid.Contains(queryInfo) || queryInfo == null
@@ -159,6 +207,7 @@ namespace RecycleSystem.Service
                     Status = info.Status,
                     AddTime = info.AddTime,
                     Category = (from g in categorylnfos where g.CategoryId == info.CategoryId select new { g.CategoryName }).Select(s => s.CategoryName).FirstOrDefault(),
+                    CategoryId = info.CategoryId,
                     Receiver = (from n in userInfos where n.UserId == info.UserId select new { n.UserName }).Select(s => s.UserName).FirstOrDefault(),
                     EnterpriseName = (from e in userInfos where e.UserId == info.EnterpriseId select new { e.EnterpriseName }).Select(s => s.EnterpriseName).FirstOrDefault()
                 };
@@ -179,7 +228,7 @@ namespace RecycleSystem.Service
         {
             IQueryable<UserInfo> userInfos = _dbContext.Set<UserInfo>();
             IQueryable<Categorylnfo> categorylnfos = _dbContext.Set<Categorylnfo>();
-            IQueryable<DemandOrderInfo> orderInfos = _dbContext.Set<DemandOrderInfo>().Where(o => o.Status == (int)TypeEnum.DemendOrderStatus.unAccept && o.DelFlag == false); //未接受的订单 （没有撤销的订单）
+            IQueryable<DemandOrderInfo> orderInfos = _dbContext.Set<DemandOrderInfo>().Where(o => o.Status == (int)TypeEnum.DemendOrderStatus.unAccept && o.Status != (int)TypeEnum.DemendOrderStatus.Canceled); //未接受的订单 （没有撤销的订单）
             count = orderInfos.Count();
             IEnumerable<DemandOrderOutput> orderOutputs = (from a in orderInfos
                                                            where a.Oid.Contains(queryInfo) || queryInfo == null
@@ -287,10 +336,57 @@ namespace RecycleSystem.Service
                 }
                 try
                 {
-                    orderInfo.DelFlag = true;
+                    orderInfo.Status = (int)TypeEnum.DemendOrderStatus.Canceled;
                     if (_dbContext.SaveChanges() > 0)
                     {
                         msg = "已撤销！";
+                        return true;
+                    }
+                    msg = "错误！内部异常！";
+                    return false;
+                }
+                catch (Exception ex)
+                {
+                    msg = ex.Message;
+                    return false;
+                }
+            }
+            msg = "订单不存在！数据可能被篡改！";
+            return true;
+        }
+
+        public bool WithdrewMyApplicationBySpecial(DemandOrderInput demandOrderInput,out string msg)
+        {
+            DemandOrderInfo demandOrder = _dbContext.Set<DemandOrderInfo>().Where(d => d.Oid == demandOrderInput.Oid).FirstOrDefault();
+            if (demandOrder != null)
+            {
+                try
+                {
+                    //获取到部门主管的Id
+                    string manager = _dbContext.Set<DepartmentInfo>().Where(d => d.DepartmentId == "D1003").Select(S => S.LeaderId).FirstOrDefault();
+                    string date = "W" + DateTime.Now.ToString("yyyyMMddHHmmssffff");
+                    WorkFlow workFlow = new WorkFlow
+                    {
+                        InstanceId = date,
+                        OrderID = demandOrder.Oid,
+                        CurrentReviewer = manager,
+                        TypeId = ((int)TypeEnum.WorkFlowType.SpecialWithdrew).ToString(),
+                        UserId = demandOrderInput.UserId,
+                        Status = (int)TypeEnum.WorkFlowStatus.Applying,
+                        AddTime = DateTime.Now,
+                        Reason = demandOrderInput.Reason,    
+                        isRead = false
+                    };
+                    _dbContext.Set<WorkFlow>().Add(workFlow);
+                    demandOrder.Status = (int)TypeEnum.DemendOrderStatus.ApplyingCancel;
+                    //两重审核
+                    //WorkFlowStep workFlowStep = new WorkFlowStep
+                    //{
+                    //    InstanceId = date,
+                    //}
+                    if (_dbContext.SaveChanges()>0)
+                    {
+                        msg = "申请成功！";
                         return true;
                     }
                     msg = "错误！内部异常！";
