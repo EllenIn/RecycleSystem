@@ -16,13 +16,7 @@
 <script type="text/html" id="toolbarDemo">
     <div class="layui-btn-container">
         <button class="layui-btn layui-btn-sm" lay-event="view"><i class="layui-icon"></i>查看订单</button>
-        <button class="layui-btn layui-btn-sm layui-btn-warm" lay-event="approval"><i class="layui-icon"></i>批量确认订单</button>
     </div>
-</script>
-
-<script type="text/html" id="barDemo">
-    <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
-    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
 </script>
 
 <script>
@@ -32,7 +26,7 @@
         var form = layui.form;
         table.render({
             elem: '#orderList'
-            , url: '/OrderManage/GetUnVerifyFinishedOrderList'
+            , url: '/OrderManage/GetMyFinishedOrder'
             , toolbar: '#toolbarDemo' //开启头部工具栏，并为其绑定左侧模板
             , defaultToolbar: ['filter', 'exports', 'print', { //自定义头部工具栏右侧图标。如无需自定义，去除该参数即可
                 title: '提示'
@@ -70,32 +64,10 @@
             debugger;
             var checkStatus = table.checkStatus(obj.config.id);
             switch (obj.event) {
-                case 'approval':
-                    var Id = [];
-                    var data = checkStatus.data;
-                    if (data.length == null) {
-                        return layer.alert("请选中条目！");
-                    }
-                    for (var i = 0; i < data.length; i++) {
-                        Id.push(data[i]['id'])
-                    };
-
-                    $.ajax({
-                        url: "/OrderManage/Approval",
-                        type: "post",
-                        data: {
-                            Id: Id
-                        },
-                        success: function (res) {
-                            layer.alert(res);
-                            btn_search();
-                        }
-                    });
-                    break;
                 case 'view':
                     var data = checkStatus.data;
                     if (data.length == 1) {
-                        var id = data[0].id;
+                        var id = data[0].originalOrder;
                         layui.use('layer', function () {
                             layer.open({
                                 type: 2,
@@ -103,7 +75,7 @@
                                 shade: 0.8,
                                 maxmin: true, //开启最大化最小化按钮
                                 area: ['893px', '600px'],
-                                content: '/OrderManage/ViewFinishedOrder?id=' + id,
+                                content: '/OrderManage/ViewMyOrder?id=' + id,
                                 end: function () {
                                     btn_search();
                                 }
@@ -113,7 +85,6 @@
                         return layer.alert("必须选中一条且只能选中一条！")
                     }
 
-                    
                     break;
 
                 //自定义头工具栏右侧图标 - 提示
@@ -130,7 +101,7 @@
 
         //重新加载表格，并把文本框的内容传给后台
         table.reload('orderList', {
-            url: '/OrderManage/GetUnVerifyFinishedOrderList',
+            url: '/OrderManage/GetMyFinishedOrder',
             page: {
                 curr: 1//从第一页开始（很关键）
             },

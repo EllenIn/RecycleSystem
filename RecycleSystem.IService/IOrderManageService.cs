@@ -26,5 +26,15 @@ namespace RecycleSystem.IService
         bool ApproveSpecialOrderWithdrew(DemandOrderInput demandOrderInput,out string msg);
         OrderOutput GetFinishedOrderInfo(int id);
         bool confirmFinish(OrderInput order,out string msg);
+        IEnumerable<DemandOrderOutput> GetMyRuningOrders(int page, int limit, out int count, string queryInfo, string userId);
+        OrderOutput GetMyRunningOrderInfo(string oid);
+        /// <summary>
+        /// 完成订单（上传图片）
+        /// </summary>
+        /// <returns></returns>
+        bool FinishOrder(string oid,string pathName,string userId,out string msg);
+        IEnumerable<OrderOutput> GetMyWaittingConfirmOrder(int page, int limit, out int count, string queryInfo, string userId);
+        IEnumerable<OrderOutput> GetMyFinishOrder(int page, int limit, out int count, string queryInfo, string userId);
+        OrderOutput ViewMyOrder(string oid);
     }
 }

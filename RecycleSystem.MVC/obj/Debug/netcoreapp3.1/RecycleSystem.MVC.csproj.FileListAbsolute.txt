@@ -1164,3 +1164,7 @@ D:\Users\Senku\source\repos\SenkuuChin\RecycleSystem\RecycleSystem.MVC\bin\Debug
 D:\Users\Senku\source\repos\SenkuuChin\RecycleSystem\RecycleSystem.MVC\bin\Debug\netcoreapp3.1\System.ServiceModel.dll
 D:\Users\Senku\source\repos\SenkuuChin\RecycleSystem\RecycleSystem.MVC\obj\Debug\netcoreapp3.1\Razor\Views\LogManage\Index.cshtml.g.cs
 D:\Users\Senku\source\repos\SenkuuChin\RecycleSystem\RecycleSystem.MVC\obj\Debug\netcoreapp3.1\Razor\Views\LogManage\OperateLog.cshtml.g.cs
+D:\Users\Senku\source\repos\SenkuuChin\RecycleSystem\RecycleSystem.MVC\obj\Debug\netcoreapp3.1\Razor\Views\OrderManage\FinishMyOrder.cshtml.g.cs
+D:\Users\Senku\source\repos\SenkuuChin\RecycleSystem\RecycleSystem.MVC\obj\Debug\netcoreapp3.1\Razor\Views\OrderManage\MyFinishedOrder.cshtml.g.cs
+D:\Users\Senku\source\repos\SenkuuChin\RecycleSystem\RecycleSystem.MVC\obj\Debug\netcoreapp3.1\Razor\Views\OrderManage\WaittingConfirm.cshtml.g.cs
+D:\Users\Senku\source\repos\SenkuuChin\RecycleSystem\RecycleSystem.MVC\obj\Debug\netcoreapp3.1\Razor\Views\OrderManage\ViewMyOrder.cshtml.g.cs

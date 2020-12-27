@@ -65,12 +65,36 @@ namespace RecycleSystem.Service
                     Token = user.Token,
                     UserId = user.UserId,
                     UserName = user.UserName,
-                    //RoleName = roleName,
-                    //RoleId = roleId
+                    RoleName = roleName,
+                    RoleId = roleId
                 };
-
-                return outputs;
+                LoginLogInfo loginSuccessLog = new LoginLogInfo
+                {
+                    UserId = loginInput.UserId,
+                    Ip = loginInput.IP,
+                    BrowserInfo = loginInput.BrowerInfo,
+                    SystemInfo = loginInput.OSVersion,
+                    IsLoginSuccess = true,
+                    HappenTime = DateTime.Now
+                };
+                _dbContext.Set<LoginLogInfo>().Add(loginSuccessLog);
+                if (_dbContext.SaveChanges() > 0)
+                {
+                    return outputs;
+                }
+                return null;
             }
+            LoginLogInfo loginFaildLog = new LoginLogInfo
+            {
+                UserId = loginInput.UserId,
+                Ip = loginInput.IP,
+                BrowserInfo = loginInput.BrowerInfo,
+                SystemInfo = loginInput.OSVersion,
+                IsLoginSuccess = false,
+                HappenTime = DateTime.Now
+            };
+            _dbContext.Set<LoginLogInfo>().Add(loginFaildLog);
+            _dbContext.SaveChanges();
             return null;
         }
     }

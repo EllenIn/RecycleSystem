@@ -57,19 +57,17 @@ namespace RecycleSystem.MVC.Controllers
                     ViewBag.LoginError = "验证码错误，请重新输入";
                     return View();
                 }
-
+                loginInput.BrowerInfo = _detection.Browser.Name.ToString() + _detection.Browser.Version;
+                loginInput.IP = NetHelper.GetWanIp();
+                loginInput.OSVersion = NetHelper.GetOSVersion();
                 LoginOutput login = _accountService.Login(loginInput);
                 if (login != null)
                 {
                     //string ipaddress = _httpContextAccessor.HttpContext.Connection.RemoteIpAddress.ToString();
                     //string ip = GetUserDeviceInfo.GetUserIp(HttpContext);
                     //string userAgent = GetUserDeviceInfo.UserAgent(HttpContext);
-                    string ip = GetUserDeviceInfo.GetIPAddress(HttpContext);
-                    string br = _detection.Browser.Name.ToString() + _detection.Browser.Version;
-                    string dv = _detection.Device.Type.ToString();
-                    var userAgent = Request.Headers["User-Agent"];
-                    string a = NetHelper.Browser;
-                    string ipaddress = Request.HttpContext.Connection.RemoteIpAddress.ToString();
+                    //var userAgent = Request.Headers["User-Agent"];
+                   
                     HttpContext.Session.SetString("UserName", login.UserName);
                     HttpContext.Session.SetString("UserId", login.UserId);
                     return RedirectToAction("Index", "Main");

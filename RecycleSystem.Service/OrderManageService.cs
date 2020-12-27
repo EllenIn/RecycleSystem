@@ -200,6 +200,53 @@ namespace RecycleSystem.Service
             return false;
         }
 
+        public bool FinishOrder(string oid ,string pathName, string userId, out string msg)
+        {
+            OrderInfo orderInfo = _dbContext.Set<OrderInfo>().Where(o => o.OriginalOrderId == oid).FirstOrDefault();
+            if (orderInfo!=null)
+            {
+                DemandOrderInfo demandOrderInfo = _dbContext.Set<DemandOrderInfo>().Where(d => d.Oid == oid).FirstOrDefault();
+                if (demandOrderInfo!=null)
+                {
+                    orderInfo.Url = pathName;
+                    orderInfo.FinishedTime = DateTime.Now;
+                    demandOrderInfo.Status = (int?)TypeEnum.DemendOrderStatus.Finished;
+                    OperateLog newLog = new OperateLog
+                    {
+                        OperatorId = userId,
+                        Info = "完成了 " + orderInfo.InstanceId + " 订单 (已上传图片)",
+                        AddTime = DateTime.Now
+                    };
+                    _dbContext.Set<OperateLog>().Add(newLog);
+                    try
+                    {
+                        if (_dbContext.SaveChanges()>0)
+                        {
+                            msg = "订单完成！";
+                            return true;
+                        }
+                        msg = "错误！内部出现异常！";
+                        return false;
+                    }
+                    catch (Exception ex)
+                    {
+                        msg = "错误信息："+ex.Message;
+                        if (ex.InnerException!=null)
+                        {
+                            msg += "详细信息：" + ex.InnerException.Message;
+                        }
+                        return false;
+                        
+                    }
+                }
+                msg = "原订单号不存在！请联系部门主管查看！";
+                return false;
+
+            }
+            msg = "订单好不存在！请联系主管！";
+            return false;
+        }
+
         public IEnumerable<DemandOrderOutput> GetAllOrders(int page, int limit, out int count, string queryInfo)
         {
             IQueryable<UserInfo> userInfos = _dbContext.Set<UserInfo>();
@@ -344,6 +391,57 @@ namespace RecycleSystem.Service
             return orderOutputs;
         }
 
+        public IEnumerable<OrderOutput> GetMyFinishOrder(int page, int limit, out int count, string queryInfo, string userId)
+        {
+            IQueryable<UserInfo> userInfos = _dbContext.Set<UserInfo>();
+            IQueryable<Categorylnfo> categorylnfos = _dbContext.Set<Categorylnfo>();
+            IQueryable<OrderInfo> orderInfos = _dbContext.Set<OrderInfo>().Where(o =>o.ReceiverId == userId && o.Status == (int)TypeEnum.OrderStatus.Finished && !string.IsNullOrEmpty(o.Url)); // To query the order which has been accpeted
+            count = orderInfos.Count();
+            IEnumerable<OrderOutput> orderOutputs = (from a in orderInfos
+                                                     where a.InstanceId.Contains(queryInfo) || queryInfo == null
+                                                     select new OrderOutput
+                                                     {
+                                                         Id = a.Id,
+                                                         InstanceId = a.InstanceId,
+                                                         Name = a.Name,
+                                                         Num = a.Num,
+                                                         Unit = a.Unit,
+                                                         EnterpriseID = (from u in userInfos where u.UserId == a.EnterpriseId select new { u.UserName }).Select(s => s.UserName).FirstOrDefault(),
+                                                         Status = a.Status,
+                                                         AddTime = a.AddTime,
+                                                         CategoryName = (from g in categorylnfos where g.CategoryId == a.CategoryId select new { g.CategoryName }).Select(s => s.CategoryName).FirstOrDefault(),
+                                                         Receiver = (from n in userInfos where n.UserId == a.ReceiverId select new { n.UserName }).Select(s => s.UserName).FirstOrDefault(),
+                                                         EnterpriseName = (from n in userInfos where n.UserId == a.EnterpriseId select new { n.EnterpriseName }).Select(s => s.EnterpriseName).FirstOrDefault(),
+                                                         OriginalOrder = a.OriginalOrderId
+                                                     }).OrderBy(o => o.Id).Skip((page - 1) * limit).Take(limit).ToList();
+            return orderOutputs;
+        }
+
+        public IEnumerable<DemandOrderOutput> GetMyRuningOrders(int page, int limit, out int count, string queryInfo, string userId)
+        {
+            IQueryable<UserInfo> userInfos = _dbContext.Set<UserInfo>();
+            IQueryable<Categorylnfo> categorylnfos = _dbContext.Set<Categorylnfo>();
+            IQueryable<DemandOrderInfo> orderInfos = _dbContext.Set<DemandOrderInfo>().Where(d => d.UserId == userId && d.DelFlag == false && d.Status == (int)TypeEnum.DemendOrderStatus.Accepted); // To Find The order which is applied by me and is runing
+            count = orderInfos.Count();
+            IEnumerable<DemandOrderOutput> orderOutputs = (from a in orderInfos
+                                                           where a.Oid.Contains(queryInfo) || queryInfo == null
+                                                           select new DemandOrderOutput
+                                                           {
+                                                               Id = a.Id,
+                                                               Oid = a.Oid,
+                                                               Name = a.Name,
+                                                               Num = a.Num,
+                                                               Unit = a.Unit,
+                                                               Enterpriser = (from u in userInfos where u.UserId == a.EnterpriseId select new { u.UserName }).Select(s => s.UserName).FirstOrDefault(),
+                                                               Status = a.Status,
+                                                               AddTime = a.AddTime,
+                                                               Category = (from g in categorylnfos where g.CategoryId == a.CategoryId select new { g.CategoryName }).Select(s => s.CategoryName).FirstOrDefault(),
+                                                               Receiver = (from n in userInfos where n.UserId == a.UserId select new { n.UserName }).Select(s => s.UserName).FirstOrDefault(),
+                                                               EnterpriseName = (from n in userInfos where n.UserId == a.EnterpriseId select new { n.EnterpriseName }).Select(s => s.EnterpriseName).FirstOrDefault(),
+                                                           }).OrderBy(o => o.Id).Skip((page - 1) * limit).Take(limit).ToList();
+            return orderOutputs;
+        }
+
         public IEnumerable<DemandOrderOutput> GetMyRunningDemandOrders(int page, int limit, out int count, string queryInfo, string userId)
         {
             IQueryable<UserInfo> userInfos = _dbContext.Set<UserInfo>();
@@ -366,6 +464,61 @@ namespace RecycleSystem.Service
                                                                Receiver = (from n in userInfos where n.UserId == a.UserId select new { n.UserName }).Select(s => s.UserName).FirstOrDefault(),
                                                                EnterpriseName = (from n in userInfos where n.UserId == a.EnterpriseId select new { n.EnterpriseName }).Select(s => s.EnterpriseName).FirstOrDefault(),
                                                            }).OrderBy(o => o.Id).Skip((page - 1) * limit).Take(limit).ToList();
+            return orderOutputs;
+        }
+
+        public OrderOutput GetMyRunningOrderInfo(string oid)
+        {
+            IQueryable<UserInfo> userInfos = _dbContext.Set<UserInfo>();
+            IQueryable<Categorylnfo> categorylnfos = _dbContext.Set<Categorylnfo>();
+            IQueryable<OrderInfo> orderInfos = _dbContext.Set<OrderInfo>(); // To query the order which has been accpeted
+
+            OrderOutput orderOutput = (from a in orderInfos
+                                       where a.OriginalOrderId == oid
+                                       select new OrderOutput
+                                       {
+                                           Id = a.Id,
+                                           InstanceId = a.InstanceId,
+                                           Name = a.Name,
+                                           Num = a.Num,
+                                           Unit = a.Unit,
+                                           EnterpriseID = (from u in userInfos where u.UserId == a.EnterpriseId select new { u.UserName }).Select(s => s.UserName).FirstOrDefault(),
+                                           Status = a.Status,
+                                           AddTime = a.AddTime,
+                                           CategoryName = (from g in categorylnfos where g.CategoryId == a.CategoryId select new { g.CategoryName }).Select(s => s.CategoryName).FirstOrDefault(),
+                                           Receiver = (from n in userInfos where n.UserId == a.ReceiverId select new { n.UserName }).Select(s => s.UserName).FirstOrDefault(),
+                                           EnterpriseName = (from n in userInfos where n.UserId == a.EnterpriseId select new { n.EnterpriseName }).Select(s => s.EnterpriseName).FirstOrDefault(),
+                                           OriginalOrder = a.OriginalOrderId,
+                                           CategoryId = a.CategoryId,
+                                           FinishedTime = a.FinishedTime,
+                                           Url = a.Url
+                                       }).FirstOrDefault();
+            return orderOutput;
+        }
+
+        public IEnumerable<OrderOutput> GetMyWaittingConfirmOrder(int page, int limit, out int count, string queryInfo, string userId)
+        {
+            IQueryable<UserInfo> userInfos = _dbContext.Set<UserInfo>();
+            IQueryable<Categorylnfo> categorylnfos = _dbContext.Set<Categorylnfo>();
+            IQueryable<OrderInfo> orderInfos = _dbContext.Set<OrderInfo>().Where(o =>o.OriginalOrderId==userId && o.Status == (int)TypeEnum.OrderStatus.Running && !string.IsNullOrEmpty(o.Url)); // To query the order which has been accpeted
+            count = orderInfos.Count();
+            IEnumerable<OrderOutput> orderOutputs = (from a in orderInfos
+                                                     where a.InstanceId.Contains(queryInfo) || queryInfo == null
+                                                     select new OrderOutput
+                                                     {
+                                                         Id = a.Id,
+                                                         InstanceId = a.InstanceId,
+                                                         Name = a.Name,
+                                                         Num = a.Num,
+                                                         Unit = a.Unit,
+                                                         EnterpriseID = (from u in userInfos where u.UserId == a.EnterpriseId select new { u.UserName }).Select(s => s.UserName).FirstOrDefault(),
+                                                         Status = a.Status,
+                                                         AddTime = a.AddTime,
+                                                         CategoryName = (from g in categorylnfos where g.CategoryId == a.CategoryId select new { g.CategoryName }).Select(s => s.CategoryName).FirstOrDefault(),
+                                                         Receiver = (from n in userInfos where n.UserId == a.ReceiverId select new { n.UserName }).Select(s => s.UserName).FirstOrDefault(),
+                                                         EnterpriseName = (from n in userInfos where n.UserId == a.EnterpriseId select new { n.EnterpriseName }).Select(s => s.EnterpriseName).FirstOrDefault(),
+                                                         OriginalOrder = a.OriginalOrderId
+                                                     }).OrderBy(o => o.Id).Skip((page - 1) * limit).Take(limit).ToList();
             return orderOutputs;
         }
 
@@ -501,6 +654,35 @@ namespace RecycleSystem.Service
             }
             msg = "错误！内部出现异常！";
             return false;
+        }
+
+        public OrderOutput ViewMyOrder(string oid)
+        {
+            IQueryable<UserInfo> userInfos = _dbContext.Set<UserInfo>();
+            IQueryable<Categorylnfo> categorylnfos = _dbContext.Set<Categorylnfo>();
+            IQueryable<OrderInfo> orderInfos = _dbContext.Set<OrderInfo>(); // To query the order which has been accpeted
+
+            OrderOutput orderOutput = (from a in orderInfos
+                                       where a.OriginalOrderId == oid
+                                       select new OrderOutput
+                                       {
+                                           Id = a.Id,
+                                           InstanceId = a.InstanceId,
+                                           Name = a.Name,
+                                           Num = a.Num,
+                                           Unit = a.Unit,
+                                           EnterpriseID = (from u in userInfos where u.UserId == a.EnterpriseId select new { u.UserName }).Select(s => s.UserName).FirstOrDefault(),
+                                           Status = a.Status,
+                                           AddTime = a.AddTime,
+                                           CategoryName = (from g in categorylnfos where g.CategoryId == a.CategoryId select new { g.CategoryName }).Select(s => s.CategoryName).FirstOrDefault(),
+                                           Receiver = (from n in userInfos where n.UserId == a.ReceiverId select new { n.UserName }).Select(s => s.UserName).FirstOrDefault(),
+                                           EnterpriseName = (from n in userInfos where n.UserId == a.EnterpriseId select new { n.EnterpriseName }).Select(s => s.EnterpriseName).FirstOrDefault(),
+                                           OriginalOrder = a.OriginalOrderId,
+                                           CategoryId = a.CategoryId,
+                                           FinishedTime = a.FinishedTime,
+                                           Url = a.Url
+                                       }).FirstOrDefault();
+            return orderOutput;
         }
 
         public DemandOrderOutput ViewSpecialApplyingOrder(string oid)

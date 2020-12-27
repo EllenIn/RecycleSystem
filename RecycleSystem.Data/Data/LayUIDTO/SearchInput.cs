@@ -8,7 +8,6 @@ namespace RecycleSystem.Data.Data.LayUIDTO
     {
         public int page { get; set; }
         public int limit { get; set; }
-        public int count { get; set; }
         public string queryInfo { get; set; }
     }
 }

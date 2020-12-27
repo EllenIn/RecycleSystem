@@ -11,6 +11,14 @@
 
 <table class="layui-hide" id="loginLogDataList" lay-filter="loginLogDataList"></table>
 
+<script type="text/html" id="statusId">
+    {{#  if(d.isLoginSuccess == true){ }}
+    <span style="color:forestgreen;width:200px">成功</span>
+    {{#  } else if (d.isLoginSuccess == false){ }}
+    <span style="color:orangered; width:200px;">失败</span>
+    {{#  } }}
+
+</script>
 
 <script>
     var table; //放置全局中，方便后续使用
@@ -42,7 +50,7 @@
                 , { field: 'ip', title: 'IP', width: 200 }
                 , { field: 'systemInfo', title: '系统版本', width: 300 }
                 , { field: 'browserInfo', title: '浏览器信息', width: 300 }
-                , { field: 'isLoginSuccess', title: '是否登录成功', width: 200 }
+                , { field: 'isLoginSuccess', title: '是否登录成功', width: 200, templet:'#statusId' }
                 , { field: 'happenTime', title: '操作事件', width: 200 }
             ]]
             , page: true

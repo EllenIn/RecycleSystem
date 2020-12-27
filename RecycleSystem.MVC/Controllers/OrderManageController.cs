@@ -1,9 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using RecycleSystem.Data.Data.LayUIDTO;
 using RecycleSystem.Data.Data.OrderManageDTO;
 using RecycleSystem.Data.Data.WorkFlowDTO;
 using RecycleSystem.DataEntity.Entities;
@@ -16,9 +19,11 @@ namespace RecycleSystem.MVC.Controllers
     public class OrderManageController : Controller
     {
         private readonly IOrderManageService _orderManageService;
-        public OrderManageController(IOrderManageService orderManageService)
+        private readonly IWebHostEnvironment _hostingEnvironment;
+        public OrderManageController(IOrderManageService orderManageService,IWebHostEnvironment hostEnvironment)
         {
             _orderManageService = orderManageService;
+            _hostingEnvironment = hostEnvironment;
         }
         public IActionResult Index()
         {
@@ -221,7 +226,7 @@ namespace RecycleSystem.MVC.Controllers
         {
             return View();
         }
-        public string GetMyRuningOrders(int page, int limit, string queryInfo)
+        public string GetMyRuningDemandOrders(int page, int limit, string queryInfo)
         {
             string userId = HttpContext.Session.GetString("UserId");
             if (string.IsNullOrEmpty(userId))
@@ -334,6 +339,139 @@ namespace RecycleSystem.MVC.Controllers
         public IActionResult MyRuning()
         {
             return View();
+        }
+        public string GetMyRunningOrders(int page, int limit, string queryInfo)
+        {
+            string userId = HttpContext.Session.GetString("UserId");
+            if (string.IsNullOrEmpty(userId))
+            {
+                return "未登录！或登录已失效";
+            }
+            if (!string.IsNullOrEmpty(queryInfo))
+            {
+                queryInfo = queryInfo.Trim();
+            }
+            int count;
+            IEnumerable<DemandOrderOutput> demands = _orderManageService.GetMyRuningOrders(page, limit, out count, queryInfo, userId);
+            DataResult<IEnumerable<DemandOrderOutput>> data = new DataResult<IEnumerable<DemandOrderOutput>>
+            {
+                msg = "获取成功！",
+                code = 0,
+                count = count,
+                data = demands
+            };
+            return JsonNetHelper.SerialzeoJsonForCamelCase(data);
+        }
+        /// <summary>
+        /// 完成订单（上传图片）
+        /// </summary>
+        /// <returns></returns>
+        public IActionResult FinishMyOrder(string oid)
+        {
+            HttpContext.Session.SetString("VOID", oid);
+            return View();
+        }
+        public JsonResult GetMyRunningOrderInfo()
+        {
+            string msg;
+            string oid = HttpContext.Session.GetString("VOID");
+            string userId = HttpContext.Session.GetString("UserId");
+            if (string.IsNullOrEmpty(userId))
+            {
+                msg = "未登录或登录已失效！";
+                return Json(msg);
+            }
+            return Json(_orderManageService.GetMyRunningOrderInfo(oid));
+            
+        }
+        public JsonResult FinishOrderByUpImg(IFormFile file)
+        {
+            string webRootPath = _hostingEnvironment.WebRootPath;
+            string fileExt = file.FileName.Substring(file.FileName.LastIndexOf('.')); //文件扩展名
+            string oid = HttpContext.Session.GetString("VOID");
+            string newFileName = oid + fileExt; //随机生成新的文件名
+            var filePath = webRootPath + "/Content/image/" + newFileName;//上传文件的完整目录
+            using (var stream = new FileStream(filePath, FileMode.Create))
+            {
+                file.CopyTo(stream);
+                stream.Flush();
+            }
+            filePath = "/Content/image/" + newFileName;
+            string msg;
+            string userId = HttpContext.Session.GetString("UserId");
+            if (userId==null)
+            {
+                msg = "未登录！或登录已失效！";
+                return Json(msg);
+            }
+            _orderManageService.FinishOrder(oid, filePath, userId, out msg);
+            HttpContext.Session.Remove("VOID");
+            return Json("信息",msg);
+        }
+        public IActionResult MyFinishedOrder()
+        {
+            return View();
+        }
+        public string GetMyFinishedOrder(int page, int limit, string queryInfo)
+        {
+            string userId = HttpContext.Session.GetString("UserId");
+            if (string.IsNullOrEmpty(userId))
+            {
+                return "未登录！或登录已失效";
+            }
+            if (!string.IsNullOrEmpty(queryInfo))
+            {
+                queryInfo = queryInfo.Trim();
+            }
+            int count;
+            IEnumerable<OrderOutput> orders = _orderManageService.GetMyFinishOrder(page, limit, out count, queryInfo, userId);
+            DataResult<IEnumerable<OrderOutput>> data = new DataResult<IEnumerable<OrderOutput>>
+            {
+                msg = "获取成功！",
+                code = 0,
+                count = count,
+                data = orders
+            };
+            return JsonNetHelper.SerialzeoJsonForCamelCase(data);
+        }
+        public IActionResult WaittingConfirm()
+        {
+            return View();
+        }
+        public string GetMyWaittingVerifyOrder(int page, int limit, string queryInfo)
+        {
+            string userId = HttpContext.Session.GetString("UserId");
+            if (string.IsNullOrEmpty(userId))
+            {
+                return "未登录！或登录已失效";
+            }
+            if (!string.IsNullOrEmpty(queryInfo))
+            {
+                queryInfo = queryInfo.Trim();
+            }
+            int count;
+            IEnumerable<OrderOutput> orders = _orderManageService.GetMyWaittingConfirmOrder(page, limit, out count, queryInfo, userId);
+            DataResult<IEnumerable<OrderOutput>> data = new DataResult<IEnumerable<OrderOutput>>
+            {
+                msg = "获取成功！",
+                code = 0,
+                count = count,
+                data = orders
+            };
+            return JsonNetHelper.SerialzeoJsonForCamelCase(data);
+        }
+        
+        public IActionResult ViewMyOrder(string id)
+        {
+            HttpContext.Session.SetString("IID", id);
+            return View();
+        }
+        public JsonResult GetMyOrderInfo()
+        {
+            string id = HttpContext.Session.GetString("IID");
+            OrderOutput order = _orderManageService.ViewMyOrder(id);
+            HttpContext.Session.Remove("IID");
+            return Json(order);
         }
     }
 }

@@ -20,4 +20,8 @@
     <ProjectReference Include="..\RecycleSystem.Ulitity\RecycleSystem.Ulitity.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="wwwroot\Content\image\" />
+  </ItemGroup>
+
 </Project>
