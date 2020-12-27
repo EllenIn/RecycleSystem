@@ -17,6 +17,13 @@
                     <label>密码</label>
                     <input class="form-control" type="password" name="Password" />
                 </div>
+                <div class="form-group">
+                    <label>验证码</label>
+                    <input id="captchaCode" name="VerifyCode" type="text" class="form-control code" placeholder="验证码" maxlength="3">
+                    <a href="javascript:void(0);" title="点击更换验证码">
+                        <img id="imgCaptchaCode" src='@Url.Content("~/Account/GetCaptchaImage")' height="34" />
+                    </a>
+                </div>
                 @*<div class="form-group" id="divVali">
                         <div id="vali">
 
@@ -26,7 +33,7 @@
                     </div>*@
                 <div class="form-group">
                     <button type="submit" class="btn btn-primary">登入</button>
-                    <span style="color:orangered">@ViewBag.LoginError</span>
+                    <span style="color:red">@ViewBag.LoginError</span>
                 </div>
                 <div class="form-group">
                     <p>
@@ -37,3 +44,10 @@
         </section>
     </div>
 </div>
+<script>
+    $(function () {
+       $("#imgCaptchaCode").click(function () {
+            $(this).attr("src", '@Url.Content("~/Account/GetCaptchaImage")' + '?t=' + new Date().getTime());
+        });
+    })
+</script>

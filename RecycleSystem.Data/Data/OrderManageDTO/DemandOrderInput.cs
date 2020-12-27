@@ -16,6 +16,10 @@ namespace RecycleSystem.Data.Data.OrderManageDTO
         public string UserId { get; set; }
         public DateTime? AddTime { get; set; }
         public int? Status { get; set; }
+
+        //申请撤销和审批用
         public string Reason { get; set; }
+        public int Decide { get; set; }
+        public string BackContent { get; set; }
     }
 }

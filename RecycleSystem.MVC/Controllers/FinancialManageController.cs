@@ -38,5 +38,10 @@ namespace RecycleSystem.MVC.Controllers
             };
             return JsonNetHelper.SerialzeoJsonForCamelCase(data);
         }
+        public JsonResult ExcelExport()
+        {
+
+            return Json(_financialManageService.GetAllBills());
+        }
     }
 }

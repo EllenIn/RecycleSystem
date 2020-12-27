@@ -12,7 +12,7 @@ namespace RecycleSystem.Data.Data.FinanceDTO
         public string Name { get; set; }
         public string Num { get; set; }
         public string Unit { get; set; }
-        public DateTime? AddTime { get; set; }
         public decimal? Money { get; set; }
+        public DateTime? AddTime { get; set; }
     }
 }

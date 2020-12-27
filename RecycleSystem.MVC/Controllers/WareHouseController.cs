@@ -43,16 +43,16 @@ namespace RecycleSystem.MVC.Controllers
         }
         public IActionResult MultipleImport(IFormFile file)
         {
-            string msg;
+            string msg="";
             string userId = HttpContext.Session.GetString("UserId");
             DataTable table = new DataTable();
-            table = ExcelHelper.ExcelToDataTable(file.OpenReadStream(), Path.GetExtension(file.FileName), out msg);
-            if (!string.IsNullOrEmpty(msg))
-            {
-                return Json(msg);
-            }
-            IEnumerable<GoodsInput> data = ExcelHelper.ConvertToList(table);
-            _wareHouseService.UploadMaterialaInfo(data, userId, msg);
+            //table = ExcelHelper.ExcelToDataTable(file.OpenReadStream(), Path.GetExtension(file.FileName), out msg);
+            //if (!string.IsNullOrEmpty(msg))
+            //{
+            //    return Json(msg);
+            //}
+            //IEnumerable<GoodsInput> data = ExcelHelper.ConvertToList(table);
+            //_wareHouseService.UploadMaterialaInfo(data, userId, msg);
             return Json(msg);
         }
         public IActionResult ViewAll()

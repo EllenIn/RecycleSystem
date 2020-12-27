@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Text;
 
 namespace RecycleSystem.Ulitity
@@ -28,7 +29,8 @@ namespace RecycleSystem.Ulitity
         public enum OrderStatus
         {
             Running,
-            Finished
+            Finished,
+            Canceled
         }
         public enum WorkFlowType
         {
@@ -40,6 +42,27 @@ namespace RecycleSystem.Ulitity
             Withdrew,
             UnAccept,
             Allow
+        }
+        public enum WorkFlowStepStatus
+        {
+            Deny,
+            Allowed
+        }
+        public enum ReviewStatus
+        {
+            UnView,
+            Viewed
+        }
+        public enum UploadFileType
+        {
+            [Description("头像")]
+            Portrait = 1,
+
+            [Description("新闻图片")]
+            News = 2,
+
+            [Description("导入的文件")]
+            Import = 10
         }
     }
 }

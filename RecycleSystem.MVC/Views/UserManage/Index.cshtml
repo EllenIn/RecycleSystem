@@ -15,7 +15,8 @@
 
 <script type="text/html" id="toolbarDemo">
     <div class="layui-btn-container">
-        <button class="layui-btn layui-btn-sm" onclick="btn_add()"><i class="layui-icon"></i>添加用户信息</button>
+        <button class="layui-btn layui-btn-sm" id="mutipAddUser"><i class="layui-icon"></i>批量添加用户信息</button>
+        <button class="layui-btn layui-btn-sm" onclick="btn_add()"><i class="layui-icon"></i>单量添加用户信息</button>
         <button class="layui-btn layui-btn-sm" lay-event="update"><i class="layui-icon"></i>修改选中信息</button>
         @*<button class="layui-btn layui-btn-sm" lay-event="delete"><i class="layui-icon"></i>删除选中用户</button>*@
         <button class="layui-btn layui-btn-sm layui-btn-warm" lay-event="repwd"><i class="layui-icon"></i>重置密码</button>
@@ -34,9 +35,10 @@
 </script>
 <script>
     var table; //放置全局中，方便后续使用
-    layui.use('table', function () {
+    layui.use(['table','upload'], function () {
         table = layui.table;
         var form = layui.form;
+        var upload = layui.upload;
         table.render({
             elem: '#userList'
             , url: '/UserManage/GetUserListJson'
@@ -147,27 +149,6 @@
                     }
                     
                     break;
-                //case 'delete':
-                //    var data = checkStatus.data[0].id;
-                //    if (confirm("确定删除吗？")) {
-                //        $.ajax({
-                //            url: "/User/Del",
-                //            type: "post",
-                //            data: { id: data },
-                //            success: function (res) {
-                //                if (res == "1001") {
-                //                    layer.alert("删除成功！");
-                //                    btn_search();
-                //                } else {
-                //                    layer.alert("删除失败！");
-                //                    btn_search();
-                //                }
-
-                //            }
-                //        })
-                //    }
-
-                //    break;
                 case 'checkrole':
 
                     layui.use('layer', function () {
@@ -190,6 +171,16 @@
                     layer.alert('这是工具栏右侧自定义的一个图标按钮');
                     break;
             };
+        });
+        upload.render({ //允许上传的文件后缀
+            elem: '#mutipAddUser'
+            , url: '/UserManage/MultipleImport' //改成您自己的上传接口
+            , accept: 'file' //普通文件
+            , exts: 'xls|xlsx' //只允许上传压缩文件
+            , done: function (res) {
+                layer.msg(res);
+                btn_search();
+            }
         });
     });
     //查询

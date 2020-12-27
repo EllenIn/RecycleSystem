@@ -1,5 +1,7 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -8,8 +10,11 @@ using Microsoft.Extensions.Logging;
 using RecycleSystem.DataEntity.Entities;
 using RecycleSystem.IService;
 using RecycleSystem.Service;
+using RecycleSystem.Ulitity;
+using RecycleSystem.Ulitity.Model;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -17,9 +22,13 @@ namespace RecycleSystem.MVC
 {
     public class Startup
     {
-        public Startup(IConfiguration configuration)
+        public IWebHostEnvironment WebHostEnvironment { get; set; }
+        public Startup(IConfiguration configuration,IWebHostEnvironment env)
         {
             Configuration = configuration;
+            WebHostEnvironment = env;
+            GlobalContext.LogWhenStart(env);
+            GlobalContext.HostingEnvironment = env;
         }
 
         public IConfiguration Configuration { get; }
@@ -37,12 +46,20 @@ namespace RecycleSystem.MVC
             services.AddScoped<IWareHouseService, WareHouseService>();
             services.AddScoped<ICategoryManageService, CategoryManageService>();
             services.AddScoped<IFinancialManageService, FinancialManageService>();
+            services.AddScoped<ILogManageService, LogManageService>();
+            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+            services.AddDetection();
+            services.AddDetectionCore().AddBrowser();
+            services.AddDetectionCore().AddDevice();
 
             services.AddScoped<DbContext, RecycleSystemDBContext>();
             services.AddDbContext<RecycleSystemDBContext>(options =>
             {
                 options.UseSqlServer(Configuration.GetConnectionString("SQLConnection"));
             });
+            GlobalContext.SystemConfig = Configuration.GetSection("SystemConfig").Get<SystemConfig>();
+            GlobalContext.Services = services;
+            GlobalContext.Configuration = Configuration;
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -64,7 +81,12 @@ namespace RecycleSystem.MVC
 
             //loggerFactory.AddLog4Net();
 
+            app.UseForwardedHeaders(new ForwardedHeadersOptions { ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto });
+
             app.UseAuthorization();
+
+            string resource = Path.Combine(env.ContentRootPath, "Resource");
+            FileHelper.CreateDirectory(resource);
 
             app.UseEndpoints(endpoints =>
             {
@@ -72,6 +94,7 @@ namespace RecycleSystem.MVC
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id?}");
             });
+            GlobalContext.ServiceProvider = app.ApplicationServices;
         }
     }
 }

@@ -1,176 +1,367 @@
-﻿using NPOI.HSSF.UserModel;
-using NPOI.SS.UserModel;
-using NPOI.XSSF.UserModel;
-using RecycleSystem.Data.Data.WareHouseDTO;
-using System;
+﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Data;
 using System.IO;
+using System.Linq;
 using System.Reflection;
-using System.Text;
+using NPOI.HSSF.UserModel;
+using NPOI.SS.UserModel;
+using NPOI.SS.Util;
+using NPOI.XSSF.UserModel;
+using RecycleSystem.Ulitity.Extension;
 
-namespace Senkuu.MaterialSystem.Utility
+namespace RecycleSystem.Ulitity
 {
-    public class ExcelHelper
+    /// <summary>
+    /// List导出到Excel文件
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    public class ExcelHelper<T> where T : new()
     {
-        public static DataTable ExcelToDataTable(Stream stream,string fileType,out string strMsg,string sheetName=null)
+        #region List导出到Excel文件
+        /// <summary>
+        /// List导出到Excel文件
+        /// </summary>
+        /// <param name="sFileName"></param>
+        /// <param name="sHeaderText"></param>
+        /// <param name="list"></param>
+        public string ExportToExcel(string sFileName, string sHeaderText, List<T> list, string[] columns)
         {
-            //out strMsg 是为了让上级一层能看到错误信息而设立。
-            strMsg = "";
-            DataTable dataTable = new DataTable();
-            ISheet sheet = null;
-            IWorkbook workbook = null;
-            try
+            sFileName = string.Format("{0}_{1}", SecurityHelper.GetGuid(), sFileName);
+            string sRoot = GlobalContext.HostingEnvironment.ContentRootPath;
+            string partDirectory = string.Format("Resource{0}Export{0}Excel", Path.DirectorySeparatorChar);
+            string sDirectory = Path.Combine(sRoot, partDirectory);
+            string sFilePath = Path.Combine(sDirectory, sFileName);
+            if (!Directory.Exists(sDirectory))
             {
-                #region 判断Excel版本
-                if (fileType == ".xlsx")
+                Directory.CreateDirectory(sDirectory);
+            }
+            using (MemoryStream ms = CreateExportMemoryStream(list, sHeaderText, columns))
+            {
+                using (FileStream fs = new FileStream(sFilePath, FileMode.Create, FileAccess.Write))
                 {
-                    workbook = new XSSFWorkbook(stream);
+                    byte[] data = ms.ToArray();
+                    fs.Write(data, 0, data.Length);
+                    fs.Flush();
                 }
-                else if (fileType == ".xls")
+            }
+            return partDirectory + Path.DirectorySeparatorChar + sFileName;
+        }
+
+        /// <summary>  
+        /// List导出到Excel的MemoryStream  
+        /// </summary>  
+        /// <param name="list">数据源</param>  
+        /// <param name="sHeaderText">表头文本</param>  
+        /// <param name="columns">需要导出的属性</param>  
+        private MemoryStream CreateExportMemoryStream(List<T> list, string sHeaderText, string[] columns)
+        {
+            HSSFWorkbook workbook = new HSSFWorkbook();
+            ISheet sheet = workbook.CreateSheet();
+
+            Type type = typeof(T);
+            PropertyInfo[] properties = ReflectionHelper.GetProperties(type, columns);
+
+            ICellStyle dateStyle = workbook.CreateCellStyle();
+            IDataFormat format = workbook.CreateDataFormat();
+            dateStyle.DataFormat = format.GetFormat("yyyy-MM-dd");
+            //单元格填充循环外设定单元格格式，避免4000行异常
+            ICellStyle contentStyle = workbook.CreateCellStyle();
+            contentStyle.Alignment = HorizontalAlignment.Left;
+            #region 取得每列的列宽（最大宽度）
+            int[] arrColWidth = new int[properties.Length];
+            for (int columnIndex = 0; columnIndex < properties.Length; columnIndex++)
+            {
+                //GBK对应的code page是CP936
+                arrColWidth[columnIndex] = properties[columnIndex].Name.Length;
+            }
+            #endregion
+            for (int rowIndex = 0; rowIndex < list.Count; rowIndex++)
+            {
+                #region 新建表，填充表头，填充列头，样式
+                if (rowIndex == 65535 || rowIndex == 0)
                 {
-                    workbook = new HSSFWorkbook(stream);
-                }
-                else
-                {
-                    throw new Exception("传入的不是Excel文件！");
+                    if (rowIndex != 0)
+                    {
+                        sheet = workbook.CreateSheet();
+                    }
+
+                    #region 表头及样式
+                    {
+                        IRow headerRow = sheet.CreateRow(0);
+                        headerRow.HeightInPoints = 25;
+                        headerRow.CreateCell(0).SetCellValue(sHeaderText);
+
+                        ICellStyle headStyle = workbook.CreateCellStyle();
+                        headStyle.Alignment = HorizontalAlignment.Center;
+                        IFont font = workbook.CreateFont();
+                        font.FontHeightInPoints = 20;
+                        font.Boldweight = 700;
+                        headStyle.SetFont(font);
+
+                        headerRow.GetCell(0).CellStyle = headStyle;
+
+                        sheet.AddMergedRegion(new CellRangeAddress(0, 0, 0, properties.Length - 1));
+                    }
+                    #endregion
+
+                    #region 列头及样式
+                    {
+                        IRow headerRow = sheet.CreateRow(1);
+                        ICellStyle headStyle = workbook.CreateCellStyle();
+                        headStyle.Alignment = HorizontalAlignment.Center;
+                        IFont font = workbook.CreateFont();
+                        font.FontHeightInPoints = 10;
+                        font.Boldweight = 700;
+                        headStyle.SetFont(font);
+
+                        for (int columnIndex = 0; columnIndex < properties.Length; columnIndex++)
+                        {
+                            // 类属性如果有Description就用Description当做列名
+                            DescriptionAttribute customAttribute = (DescriptionAttribute)Attribute.GetCustomAttribute(properties[columnIndex], typeof(DescriptionAttribute));
+                            string description = properties[columnIndex].Name;
+                            if (customAttribute != null)
+                            {
+                                description = customAttribute.Description;
+                            }
+                            headerRow.CreateCell(columnIndex).SetCellValue(description);
+                            headerRow.GetCell(columnIndex).CellStyle = headStyle;
+                            //根据表头设置列宽  
+                            sheet.SetColumnWidth(columnIndex, (arrColWidth[columnIndex] + 1) * 256);
+                        }
+                    }
+                    #endregion
                 }
                 #endregion
-                if (!string.IsNullOrEmpty(sheetName))
-                {
-                    sheet = workbook.GetSheet(sheetName);
-                    if (sheet==null)
-                    {
-                        sheet = workbook.GetSheetAt(0);
-                    }
-                }
-                else
-                {
-                    sheet = workbook.GetSheetAt(0);
-                }
-                if (sheet!=null)
-                {
-                    //获取第一行，作为dataTable数据行标题
-                    IRow firstRow = sheet.GetRow(0);
-                    int cellCount = firstRow.LastCellNum;
-                    for (int i = firstRow.FirstCellNum; i < cellCount; i++)
-                    {
-                        ICell cell = firstRow.GetCell(i);
-                        if (cell != null)
-                        {
-                            string cellValue = cell.StringCellValue.Trim();
-                            if (!string.IsNullOrEmpty(cellValue))
-                            {
-                                if (cellValue=="物品编号")
-                                {
-                                    cellValue = "InstanceID";
-                                }
-                                if (cellValue == "类别")
-                                {
-                                    cellValue = "CategoryID";
-                                }
-                                if (cellValue == "物品名")
-                                {
-                                    cellValue = "Name";
-                                }
-                                if (cellValue == "数量")
-                                {
-                                    cellValue = "Num";
-                                }
-                                if (cellValue == "单位")
-                                {
-                                    cellValue = "Unit";
-                                }
-                                DataColumn dataColumn = new DataColumn(cellValue);
-                                dataTable.Columns.Add(dataColumn);
-                            }
-                        }
-                    }
-                    //获取第二行及后面的数据
-                    DataRow dataRow = null;
-                    //需从一开始，不然会从第一行开始遍历。把标题又拿一遍下来
-                    for (int j = sheet.FirstRowNum+1; j <= sheet.LastRowNum; j++)
-                    {
-                        IRow row = sheet.GetRow(j);
-                        dataRow = dataTable.NewRow();
-                        if (row==null||row.FirstCellNum<0)
-                        {
-                            continue;
-                        }
-                        // row 行。 cell列
-                        for (int i = row.FirstCellNum; i < 6; i++)
-                        {
-                            ICell cellData = row.GetCell(i);
-                            if (cellData!=null)
-                            {
-                                if (cellData.CellType==CellType.Numeric)
-                                {
-                                    if (DateUtil.IsCellDateFormatted(cellData))
-                                    {
-                                        dataRow[i] = cellData.DateCellValue;
-                                    }
-                                    else
-                                    {
-                                        dataRow[i] = cellData.ToString().Trim();
-                                    }
-                                }
-                                else
-                                {
-                                    //赋上值
-                                    dataRow[i] = cellData.ToString().Trim();
-                                }
-                            }
-                        }
-                        dataTable.Rows.Add(dataRow);
-                    }
-                }
-                else
-                {
-                    throw new Exception("没有获取到Excel中的数据表！");
-                }
-            }
-            catch (Exception ex)
-            {
-                strMsg = ex.Message;
-            }
-            workbook.Close();
-            return dataTable;
-        }
-        public static List<GoodsInput> ConvertToList(DataTable dt)
-        {
-            // 定义集合
-            List<GoodsInput> ts = new List<GoodsInput>();
-            // 获得此模型的类型
-            Type type = typeof(GoodsInput);
-            //定义一个临时变量
-            string tempName = string.Empty;
-            //遍历DataTable中所有的数据行
-            foreach (DataRow dr in dt.Rows)
-            {
-                GoodsInput t = new GoodsInput();
-                // 获得此模型的公共属性
-                PropertyInfo[] propertys = t.GetType().GetProperties();
-                //遍历该对象的所有属性
-                foreach (PropertyInfo pi in propertys)
-                {
-                    tempName = pi.Name;//将属性名称赋值给临时变量
-                    //检查DataTable是否包含此列（列名==对象的属性名）  
-                    if (dt.Columns.Contains(tempName))
-                    {
-                        // 判断此属性是否有Setter
-                        if (!pi.CanWrite) continue;//该属性不可写，直接跳出
 
-                        //取值
-                        object value = dr[tempName];
-                        //如果非空，则赋给对象的属性
-                        if (value != DBNull.Value)
-                            pi.SetValue(t, value, null);
+                #region 填充内容
+                IRow dataRow = sheet.CreateRow(rowIndex + 2); // 前面2行已被占用
+                for (int columnIndex = 0; columnIndex < properties.Length; columnIndex++)
+                {
+                    ICell newCell = dataRow.CreateCell(columnIndex);
+                    newCell.CellStyle = contentStyle;
+                    string drValue = properties[columnIndex].GetValue(list[rowIndex], null).ParseToString();
+                    //根据单元格内容设定列宽
+                    int length = (System.Text.Encoding.UTF8.GetBytes(drValue).Length+1)*256;
+                    if (sheet.GetColumnWidth(columnIndex) < length && !drValue.IsEmpty())
+                    {
+                        sheet.SetColumnWidth(columnIndex, length);
+                    }
+
+                    switch (properties[columnIndex].PropertyType.ToString())
+                    {
+                        case "System.String":
+                            newCell.SetCellValue(drValue);
+                            break;
+
+                        case "System.DateTime":
+                        case "System.Nullable`1[System.DateTime]":
+                            newCell.SetCellValue(drValue.ParseToDateTime());
+                            newCell.CellStyle = dateStyle; //格式化显示  
+                            break;
+
+                        case "System.Boolean":
+                        case "System.Nullable`1[System.Boolean]":
+                            newCell.SetCellValue(drValue.ParseToBool());
+                            break;
+
+                        case "System.Byte":
+                        case "System.Nullable`1[System.Byte]":
+                        case "System.Int16":
+                        case "System.Nullable`1[System.Int16]":
+                        case "System.Int32":
+                        case "System.Nullable`1[System.Int32]":
+                            newCell.SetCellValue(drValue.ParseToInt());
+                            break;
+
+                        case "System.Int64":
+                        case "System.Nullable`1[System.Int64]":
+                            newCell.SetCellValue(drValue.ParseToString());
+                            break;
+
+                        case "System.Double":
+                        case "System.Nullable`1[System.Double]":
+                            newCell.SetCellValue(drValue.ParseToDouble());
+                            break;
+
+                        case "System.Single":
+                        case "System.Nullable`1[System.Single]":
+                            newCell.SetCellValue(drValue.ParseToDouble());
+                            break;
+
+                        case "System.Decimal":
+                        case "System.Nullable`1[System.Decimal]":
+                            newCell.SetCellValue(drValue.ParseToDouble());
+                            break;
+
+                        case "System.DBNull":
+                            newCell.SetCellValue(string.Empty);
+                            break;
+
+                        default:
+                            newCell.SetCellValue(string.Empty);
+                            break;
                     }
                 }
-                //对象添加到泛型集合中
-                ts.Add(t);
+                #endregion
             }
-            return ts;
+
+            using (MemoryStream ms = new MemoryStream())
+            {
+                workbook.Write(ms);
+                workbook.Close();
+                ms.Flush();
+                ms.Position = 0;
+                return ms;
+            }
         }
+        #endregion
+
+        #region Excel导入
+        /// <summary>
+        /// Excel导入
+        /// </summary>
+        /// <param name="filePath"></param>
+        /// <returns></returns>
+        public List<T> ImportFromExcel(string filePath)
+        {
+            string absoluteFilePath = GlobalContext.HostingEnvironment.ContentRootPath + filePath.Replace(Path.AltDirectorySeparatorChar, Path.DirectorySeparatorChar);
+            List<T> list = new List<T>();
+            HSSFWorkbook hssfWorkbook = null;
+            XSSFWorkbook xssWorkbook = null;
+            ISheet sheet = null;
+            using (FileStream file = new FileStream(absoluteFilePath, FileMode.Open, FileAccess.Read))
+            {
+                switch (Path.GetExtension(filePath))
+                {
+                    case ".xls":
+                        hssfWorkbook = new HSSFWorkbook(file);
+                        sheet = hssfWorkbook.GetSheetAt(0);
+                        break;
+
+                    case ".xlsx":
+                        xssWorkbook = new XSSFWorkbook(file);
+                        sheet = xssWorkbook.GetSheetAt(0);
+                        break;
+
+                    default:
+                        throw new Exception("不支持的文件格式");
+                }
+            }
+            IRow columnRow = sheet.GetRow(1); // 第二行为字段名
+            Dictionary<int, PropertyInfo> mapPropertyInfoDict = new Dictionary<int, PropertyInfo>();
+            for (int j = 0; j < columnRow.LastCellNum; j++)
+            {
+                ICell cell = columnRow.GetCell(j);
+                PropertyInfo propertyInfo = MapPropertyInfo(cell.ParseToString());
+                if (propertyInfo != null)
+                {
+                    mapPropertyInfoDict.Add(j, propertyInfo);
+                }
+            }
+
+            for (int i = (sheet.FirstRowNum + 2); i <= sheet.LastRowNum; i++)
+            {
+                IRow row = sheet.GetRow(i);
+                T entity = new T();
+                for (int j = row.FirstCellNum; j < columnRow.LastCellNum; j++)
+                {
+                    if (mapPropertyInfoDict.ContainsKey(j))
+                    {
+                        if (row.GetCell(j) != null)
+                        {
+                            PropertyInfo propertyInfo = mapPropertyInfoDict[j];
+                            switch (propertyInfo.PropertyType.ToString())
+                            {
+                                case "System.DateTime":
+                                case "System.Nullable`1[System.DateTime]":
+                                    mapPropertyInfoDict[j].SetValue(entity, row.GetCell(j).ParseToString().ParseToDateTime());
+                                    break;
+
+                                case "System.Boolean":
+                                case "System.Nullable`1[System.Boolean]":
+                                    mapPropertyInfoDict[j].SetValue(entity, row.GetCell(j).ParseToString().ParseToBool());
+                                    break;
+
+                                case "System.Byte":
+                                case "System.Nullable`1[System.Byte]":
+                                    mapPropertyInfoDict[j].SetValue(entity, Byte.Parse(row.GetCell(j).ParseToString()));
+                                    break;
+                                case "System.Int16":
+                                case "System.Nullable`1[System.Int16]":
+                                    mapPropertyInfoDict[j].SetValue(entity, Int16.Parse(row.GetCell(j).ParseToString()));
+                                    break;
+                                case "System.Int32":
+                                case "System.Nullable`1[System.Int32]":
+                                    mapPropertyInfoDict[j].SetValue(entity, row.GetCell(j).ParseToString().ParseToInt());
+                                    break;
+
+                                case "System.Int64":
+                                case "System.Nullable`1[System.Int64]":
+                                    mapPropertyInfoDict[j].SetValue(entity, row.GetCell(j).ParseToString().ParseToLong());
+                                    break;
+
+                                case "System.Double":
+                                case "System.Nullable`1[System.Double]":
+                                    mapPropertyInfoDict[j].SetValue(entity, row.GetCell(j).ParseToString().ParseToDouble());
+                                    break;
+                                
+                                case "System.Single":
+                                case "System.Nullable`1[System.Single]":
+                                    mapPropertyInfoDict[j].SetValue(entity, row.GetCell(j).ParseToString().ParseToDouble());
+                                    break;
+
+                                case "System.Decimal":
+                                case "System.Nullable`1[System.Decimal]":
+                                    mapPropertyInfoDict[j].SetValue(entity, row.GetCell(j).ParseToString().ParseToDecimal());
+                                    break;
+
+                                default:
+                                case "System.String":
+                                    mapPropertyInfoDict[j].SetValue(entity, row.GetCell(j).ParseToString());
+                                    break;
+                            }
+                        }
+                    }
+                }
+                list.Add(entity);
+            }
+            hssfWorkbook?.Close();
+            xssWorkbook?.Close();
+            return list;
+        }
+
+        /// <summary>
+        /// 查找Excel列名对应的实体属性
+        /// </summary>
+        /// <param name="columnName"></param>
+        /// <returns></returns>
+        private PropertyInfo MapPropertyInfo(string columnName)
+        {
+            PropertyInfo[] propertyList = ReflectionHelper.GetProperties(typeof(T));
+            PropertyInfo propertyInfo = propertyList.Where(p => p.Name == columnName).FirstOrDefault();
+            if (propertyInfo != null)
+            {
+                return propertyInfo;
+            }
+            else
+            {
+                foreach (PropertyInfo tempPropertyInfo in propertyList)
+                {
+                    DescriptionAttribute[] attributes = (DescriptionAttribute[])tempPropertyInfo.GetCustomAttributes(typeof(DescriptionAttribute), false);
+                    if (attributes.Length > 0)
+                    {
+                        if (attributes[0].Description == columnName)
+                        {
+                            return tempPropertyInfo;
+                        }
+                    }
+                }
+            }
+            return null;
+        }
+        #endregion
     }
 }
+

@@ -2,10 +2,13 @@
 using Microsoft.AspNetCore.Mvc;
 using RecycleSystem.Data.Data.UserManageDTO;
 using RecycleSystem.IService;
+using RecycleSystem.Ulitity;
 using Senkuu.MaterialSystem.Model;
 using Senkuu.MaterialSystem.Utility;
 using System;
 using System.Collections.Generic;
+using System.Data;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -109,6 +112,16 @@ namespace RecycleSystem.MVC.Controllers
         public JsonResult GetUsers()
         {
             return Json(_userManageService.GetUsers());
+        }
+        public JsonResult MultipleImport(IFormFile file)
+        {
+            string msg="";
+            string msg1;
+            //IEnumerable<UserInput> inputs = new ExcelHelper<UserInput>().ImportFromExcel(Path.GetExtension(file.FileName));
+            DataTable dataTable = OriginExcelHelper.ExcelToDataTable(file.OpenReadStream(), Path.GetExtension(file.FileName), out msg);
+            IEnumerable<UserInput> users = OriginExcelHelper.ConvertToList(dataTable,out msg1);
+            _userManageService.MutipleImport(users, out msg);
+            return Json(msg);
         }
     }
 }

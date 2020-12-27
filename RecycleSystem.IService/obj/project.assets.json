@@ -27,27 +27,20 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\Administrator\\.nuget\\packages\\": {},
-    "C:\\Microsoft\\Xamarin\\NuGet\\": {},
-    "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder": {}
+    "C:\\Users\\Senku\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "E:\\Senkuu\\RecycleSystem\\RecycleSystem.IService\\RecycleSystem.IService.csproj",
+      "projectUniqueName": "D:\\Users\\Senku\\source\\repos\\SenkuuChin\\RecycleSystem\\RecycleSystem.IService\\RecycleSystem.IService.csproj",
       "projectName": "RecycleSystem.IService",
-      "projectPath": "E:\\Senkuu\\RecycleSystem\\RecycleSystem.IService\\RecycleSystem.IService.csproj",
-      "packagesPath": "C:\\Users\\Administrator\\.nuget\\packages\\",
-      "outputPath": "E:\\Senkuu\\RecycleSystem\\RecycleSystem.IService\\obj\\",
+      "projectPath": "D:\\Users\\Senku\\source\\repos\\SenkuuChin\\RecycleSystem\\RecycleSystem.IService\\RecycleSystem.IService.csproj",
+      "packagesPath": "C:\\Users\\Senku\\.nuget\\packages\\",
+      "outputPath": "D:\\Users\\Senku\\source\\repos\\SenkuuChin\\RecycleSystem\\RecycleSystem.IService\\obj\\",
       "projectStyle": "PackageReference",
-      "fallbackFolders": [
-        "C:\\Microsoft\\Xamarin\\NuGet\\",
-        "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
-      ],
       "configFilePaths": [
-        "C:\\Users\\Administrator\\AppData\\Roaming\\NuGet\\NuGet.Config",
-        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config",
-        "C:\\Program Files (x86)\\NuGet\\Config\\Xamarin.Offline.config"
+        "C:\\Users\\Senku\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
         "netcoreapp3.1"
@@ -58,9 +51,10 @@
       },
       "frameworks": {
         "netcoreapp3.1": {
+          "targetAlias": "netcoreapp3.1",
           "projectReferences": {
-            "E:\\Senkuu\\RecycleSystem\\RecycleSystem.Data\\RecycleSystem.Data.csproj": {
-              "projectPath": "E:\\Senkuu\\RecycleSystem\\RecycleSystem.Data\\RecycleSystem.Data.csproj"
+            "D:\\Users\\Senku\\source\\repos\\SenkuuChin\\RecycleSystem\\RecycleSystem.Data\\RecycleSystem.Data.csproj": {
+              "projectPath": "D:\\Users\\Senku\\source\\repos\\SenkuuChin\\RecycleSystem\\RecycleSystem.Data\\RecycleSystem.Data.csproj"
             }
           }
         }
@@ -73,6 +67,7 @@
     },
     "frameworks": {
       "netcoreapp3.1": {
+        "targetAlias": "netcoreapp3.1",
         "imports": [
           "net461",
           "net462",
@@ -88,7 +83,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\3.1.403\\RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.101\\RuntimeIdentifierGraph.json"
       }
     }
   }

@@ -21,6 +21,10 @@ namespace RecycleSystem.IService
         bool WithdrewMyApplication(string oid, out string msg);
         IEnumerable<DemandOrderOutput> GetMyRunningDemandOrders(int page, int limit, out int count, string queryInfo, string userId);
         bool WithdrewMyApplicationBySpecial(DemandOrderInput demandOrderInput,out string msg);
-        IEnumerable<WorkFlowOutput> GetFlowOutputs(int page, int limit, out int count, string queryInfo);
+        IEnumerable<WorkFlowOutput> GetFlowOutputs(int page, int limit, out int count, string queryInfo,string userId);
+        DemandOrderOutput ViewSpecialApplyingOrder(string oid);
+        bool ApproveSpecialOrderWithdrew(DemandOrderInput demandOrderInput,out string msg);
+        OrderOutput GetFinishedOrderInfo(int id);
+        bool confirmFinish(OrderInput order,out string msg);
     }
 }

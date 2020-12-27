@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using RecycleSystem.Data.Data.OrderManageDTO;
+using RecycleSystem.Data.Data.WorkFlowDTO;
 using RecycleSystem.DataEntity.Entities;
 using RecycleSystem.IService;
 using Senkuu.MaterialSystem.Model;
@@ -114,7 +115,7 @@ namespace RecycleSystem.MVC.Controllers
         {
             return View();
         }
-        public string VerifyGetUnVerifyOrderList(int page, int limit, string queryInfo)
+        public string GetUnVerifyFinishedOrderList(int page, int limit, string queryInfo)
         {
             if (!string.IsNullOrEmpty(queryInfo))
             {
@@ -178,7 +179,7 @@ namespace RecycleSystem.MVC.Controllers
                 msg = "必须选择类别与单位！";
                 return Json(msg);
             }
-            if ((demandOrderInput.Name.Contains("铁") && demandOrderInput.Unit != "G1001")|| (demandOrderInput.Name.Contains("纸") && demandOrderInput.Unit != "G1002") || (demandOrderInput.Name.Contains("塑料") && demandOrderInput.Unit != "G1003") || (demandOrderInput.Name.Contains("玻璃瓶") && demandOrderInput.Unit != "G1004"))
+            if ((demandOrderInput.Name.Contains("铁") && demandOrderInput.CategoryId != "G1001") || (demandOrderInput.Name.Contains("纸") && demandOrderInput.CategoryId != "G1002") || (demandOrderInput.Name.Contains("塑料") && demandOrderInput.CategoryId != "G1003") || (demandOrderInput.Name.Contains("玻璃瓶") && demandOrderInput.CategoryId != "G1004"))
             {
                 msg = "所选类目不正确，不与物品们相匹配！";
                 return Json(msg);
@@ -232,7 +233,7 @@ namespace RecycleSystem.MVC.Controllers
                 queryInfo = queryInfo.Trim();
             }
             int count;
-            IEnumerable<DemandOrderOutput> demandOrders = _orderManageService.GetMyRunningDemandOrders(page, limit, out count, queryInfo,userId);
+            IEnumerable<DemandOrderOutput> demandOrders = _orderManageService.GetMyRunningDemandOrders(page, limit, out count, queryInfo, userId);
             DataResult<IEnumerable<DemandOrderOutput>> data = new DataResult<IEnumerable<DemandOrderOutput>>
             {
                 msg = "获取成功！",
@@ -261,16 +262,78 @@ namespace RecycleSystem.MVC.Controllers
             _orderManageService.WithdrewMyApplicationBySpecial(demandOrderInput, out msg);
             return Json(msg);
         }
-        public IActionResult ViewSpecialApplyingOrder(string oid)
-        {
-            ViewBag.Order = _orderManageService.GetOrderByOID(oid);
-            return View();
-        }
         #endregion
         public IActionResult ApprovalSpecialOrderWithdrew()
         {
             return View();
         }
+        public string GetRuningSpecialOrders(int page, int limit, string queryInfo)
+        {
+            string userId = HttpContext.Session.GetString("UserId");
+            if (string.IsNullOrEmpty(userId))
+            {
+                return "未登录！或登录已失效";
+            }
+            if (!string.IsNullOrEmpty(queryInfo))
+            {
+                queryInfo = queryInfo.Trim();
+            }
+            int count;
+            IEnumerable<WorkFlowOutput> workFlowOrder = _orderManageService.GetFlowOutputs(page, limit, out count, queryInfo, userId);
+            DataResult<IEnumerable<WorkFlowOutput>> data = new DataResult<IEnumerable<WorkFlowOutput>>
+            {
+                msg = "获取成功！",
+                code = 0,
+                count = count,
+                data = workFlowOrder
+            };
+            return JsonNetHelper.SerialzeoJsonForCamelCase(data);
+        }
+        public IActionResult ViewSpecialApplyingOrder(string oid)
+        {
+            HttpContext.Session.SetString("UpdateOID", oid);
+            return View();
+        }
+        [HttpPost]
+        public JsonResult ViewSpecialApplyingOrder()
+        {
+            string oid = HttpContext.Session.GetString("UpdateOID");
+            DemandOrderOutput demandOrderOutput = _orderManageService.ViewSpecialApplyingOrder(oid);
+            HttpContext.Session.Remove("UpdateOID");
+            return Json(demandOrderOutput);
+        }
+        [HttpPost]
+        public JsonResult ApproveSpecialOrderWithdrew(DemandOrderInput demandOrderInput)
+        {
+            string msg;
+            _orderManageService.ApproveSpecialOrderWithdrew(demandOrderInput,out msg);
+            return Json(msg);
+        }
+        public IActionResult ViewFinishedOrder(int id)
+        {
+            HttpContext.Session.SetInt32("ViewID", id);
+            return View();
+        }
+        [HttpPost]
+        public JsonResult GetFinishedOrder()
+        {
+            int id = (int)HttpContext.Session.GetInt32("ViewID");
+            OrderOutput order = _orderManageService.GetFinishedOrderInfo(id);
+            HttpContext.Session.Remove("ViewID");
+            return Json(order);
+        }
+        [HttpPost]
+        public JsonResult ConfirmFinish(OrderInput orderInput)
+        {
+            string msg;
+            orderInput.OperationID = HttpContext.Session.GetString("UserId");
+            _orderManageService.confirmFinish(orderInput, out msg);
+            return Json(msg);
+        }
 
+        public IActionResult MyRuning()
+        {
+            return View();
+        }
     }
 }

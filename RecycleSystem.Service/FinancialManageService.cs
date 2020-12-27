@@ -32,7 +32,24 @@ namespace RecycleSystem.Service
                                                              Unit = r.Unit,
                                                              Money = r.Money,
                                                              AddTime = r.AddTime
-                                                         }).OrderBy(o => o.Id).Skip((page - 1) * limit).Take(limit).ToList();
+                                                         }).OrderBy(o => o.AddTime).Skip((page - 1) * limit).Take(limit).ToList();
+            return revenueOutputs;
+        }
+        public IEnumerable<RevenueOutput> GetAllBills()
+        {
+            IQueryable<RevenueBill> revenueBills = _dbContext.Set<RevenueBill>();
+            IEnumerable<RevenueOutput> revenueOutputs = (from r in revenueBills
+                                                         select new RevenueOutput
+                                                         {
+                                                             Id = r.Id,
+                                                             Zid = r.Zid,
+                                                             Name = r.Name,
+                                                             Oid = r.Oid,
+                                                             Num = r.Num,
+                                                             Unit = r.Unit,
+                                                             Money = r.Money,
+                                                             AddTime = r.AddTime
+                                                         }).OrderBy(o => o.AddTime).ToList();
             return revenueOutputs;
         }
     }

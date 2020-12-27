@@ -16,6 +16,7 @@ namespace RecycleSystem.DataEntity.Entities
         public string Num { get; set; }
         public string ReceiverId { get; set; }
         public DateTime? AddTime { get; set; }
+        public DateTime? FinishedTime { get; set; }
         public string Unit { get; set; }
         public int? Status { get; set; }
         public string Url { get; set; }

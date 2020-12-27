@@ -23,17 +23,13 @@
 <!-- 注意：如果你直接复制所有代码到本地，上述js路径需要改成你本地的 -->
 <script type="text/html" id="statusId">
     {{#  if(d.status == 1){ }}
-    <span style="color: indianred;width:200px">未接单</span>
+    <span style="color: indianred;width:200px">撤销订单申请中</span>
     {{#  } else if (d.status == 2){ }}
-    <span style="color:orangered; width:200px;">进行中</span>
+    <span style="color:orangered; width:200px;">客户已撤销申请</span>
     {{#  } else if (d.status == 3){ }}
-    <span style="color:red;width:200px">已完成</span>
+    <span style="color:red;width:200px">拒绝撤销订单</span>
     {{#  } else if (d.status == 4){ }}
-    <span style="color:palevioletred;width:200px">撤销申请中</span>
-    {{#  } else if (d.status == 5){ }}
-    <span style="color:tomato;width:200px">已驳回撤销申请</span>
-    {{#  } else if (d.status == 6){ }}
-    <span style="color:gold;width:200px">已撤销</span>
+    <span style="color:palevioletred;width:200px">已允许</span>
     {{#  } }}
 
 </script>
@@ -62,15 +58,16 @@
             , title: '用户数据表'
             , cols: [[
                 { type: 'checkbox', fixed: 'left' }
-                , { field: 'oid', title: '订单编号', width: 300, fixed: 'left' }
-                , { field: 'enterpriser', title: '发布者', width: 100 }
-                , { field: 'name', title: '物品名', width: 120 }
-                , { field: 'category', title: '类型', width: 150 }
-                , { field: 'num', title: '数量', width: 80 }
-                , { field: 'unit', title: '单位', width: 80 }
-                , { field: 'addTime', title: '添加时间', width: 200 }
+                , { field: 'instanceId', title: '事件编号', width: 300, fixed: 'left' }
+                , { field: 'userId', title: '请求人', width: 100 }
+                , { field: 'enterpriseName', title: '所属公司', width: 100 }
+                , { field: 'reason', title: '缘由', width: 120 }
+                , { field: 'currentReviewer', title: '当前审核人', width: 150 }
+                , { field: 'orderID', title: '订单编号', width: 80 }
+                , { field: 'typeId', title: '类别', width: 80 }
+                , { field: 'addTime', title: '申请时间', width: 200 }
                 , { field: 'status', title: '状态', width: 130, sort: false, templet: '#statusId' }
-                , { field: 'receiver', title: '执行者', width: 130, sort: false }
+                , { field: 'receiver', title: '正在执行人', width: 130, sort: false }
                 , { fixed: 'right', title: '操作', width: 200, align: 'center', toolbar: '#operation' }
             ]]
             , page: true
@@ -84,13 +81,12 @@
             var data = obj.data;
             switch (obj.event) {
                 case 'ViewSpecial':
-                    console.log(data);
                     layer.open({
                         type: 2,
                         title: "请求撤销的特殊订单查看",
                         shade: 0.8,
                         area: ['780px', '620px'],
-                        content: ['/OrderManage/ViewSpecialApplyingOrder?oid=' + data.oid + ''],
+                        content: ['/OrderManage/ViewSpecialApplyingOrder?oid=' + data.orderID + ''],
                     });
                     break;
                 //自定义头工具栏右侧图标 - 提示

@@ -1,0 +1,12 @@
+E:\下载\Compressed\YiShaAdmin-master\YiShaAdmin-master\YiSha.Util\YiSha.Util\bin\Debug\netcoreapp3.1\YiSha.Util.deps.json
+E:\下载\Compressed\YiShaAdmin-master\YiShaAdmin-master\YiSha.Util\YiSha.Util\bin\Debug\netcoreapp3.1\YiSha.Util.dll
+E:\下载\Compressed\YiShaAdmin-master\YiShaAdmin-master\YiSha.Util\YiSha.Util\bin\Debug\netcoreapp3.1\YiSha.Util.pdb
+E:\下载\Compressed\YiShaAdmin-master\YiShaAdmin-master\YiSha.Util\YiSha.Util\bin\Debug\netcoreapp3.1\YiSha.Enum.dll
+E:\下载\Compressed\YiShaAdmin-master\YiShaAdmin-master\YiSha.Util\YiSha.Util\bin\Debug\netcoreapp3.1\YiSha.Enum.pdb
+E:\下载\Compressed\YiShaAdmin-master\YiShaAdmin-master\YiSha.Util\YiSha.Util\obj\Debug\netcoreapp3.1\YiSha.Util.csprojAssemblyReference.cache
+E:\下载\Compressed\YiShaAdmin-master\YiShaAdmin-master\YiSha.Util\YiSha.Util\obj\Debug\netcoreapp3.1\YiSha.Util.AssemblyInfoInputs.cache
+E:\下载\Compressed\YiShaAdmin-master\YiShaAdmin-master\YiSha.Util\YiSha.Util\obj\Debug\netcoreapp3.1\YiSha.Util.AssemblyInfo.cs
+E:\下载\Compressed\YiShaAdmin-master\YiShaAdmin-master\YiSha.Util\YiSha.Util\obj\Debug\netcoreapp3.1\YiSha.Util.csproj.CoreCompileInputs.cache
+E:\下载\Compressed\YiShaAdmin-master\YiShaAdmin-master\YiSha.Util\YiSha.Util\obj\Debug\netcoreapp3.1\YiSha.Util.csproj.CopyComplete
+E:\下载\Compressed\YiShaAdmin-master\YiShaAdmin-master\YiSha.Util\YiSha.Util\obj\Debug\netcoreapp3.1\YiSha.Util.dll
+E:\下载\Compressed\YiShaAdmin-master\YiShaAdmin-master\YiSha.Util\YiSha.Util\obj\Debug\netcoreapp3.1\YiSha.Util.pdb

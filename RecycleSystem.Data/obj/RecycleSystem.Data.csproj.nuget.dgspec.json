@@ -1,26 +1,21 @@
 {
   "format": 1,
   "restore": {
-    "E:\\Senkuu\\RecycleSystem\\RecycleSystem.Data\\RecycleSystem.Data.csproj": {}
+    "D:\\Users\\Senku\\source\\repos\\SenkuuChin\\RecycleSystem\\RecycleSystem.Data\\RecycleSystem.Data.csproj": {}
   },
   "projects": {
-    "E:\\Senkuu\\RecycleSystem\\RecycleSystem.Data\\RecycleSystem.Data.csproj": {
+    "D:\\Users\\Senku\\source\\repos\\SenkuuChin\\RecycleSystem\\RecycleSystem.Data\\RecycleSystem.Data.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "E:\\Senkuu\\RecycleSystem\\RecycleSystem.Data\\RecycleSystem.Data.csproj",
+        "projectUniqueName": "D:\\Users\\Senku\\source\\repos\\SenkuuChin\\RecycleSystem\\RecycleSystem.Data\\RecycleSystem.Data.csproj",
         "projectName": "RecycleSystem.Data",
-        "projectPath": "E:\\Senkuu\\RecycleSystem\\RecycleSystem.Data\\RecycleSystem.Data.csproj",
-        "packagesPath": "C:\\Users\\Administrator\\.nuget\\packages\\",
-        "outputPath": "E:\\Senkuu\\RecycleSystem\\RecycleSystem.Data\\obj\\",
+        "projectPath": "D:\\Users\\Senku\\source\\repos\\SenkuuChin\\RecycleSystem\\RecycleSystem.Data\\RecycleSystem.Data.csproj",
+        "packagesPath": "C:\\Users\\Senku\\.nuget\\packages\\",
+        "outputPath": "D:\\Users\\Senku\\source\\repos\\SenkuuChin\\RecycleSystem\\RecycleSystem.Data\\obj\\",
         "projectStyle": "PackageReference",
-        "fallbackFolders": [
-          "C:\\Microsoft\\Xamarin\\NuGet\\",
-          "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
-        ],
         "configFilePaths": [
-          "C:\\Users\\Administrator\\AppData\\Roaming\\NuGet\\NuGet.Config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Xamarin.Offline.config"
+          "C:\\Users\\Senku\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
           "netcoreapp3.1"
@@ -31,6 +26,7 @@
         },
         "frameworks": {
           "netcoreapp3.1": {
+            "targetAlias": "netcoreapp3.1",
             "projectReferences": {}
           }
         },
@@ -42,6 +38,7 @@
       },
       "frameworks": {
         "netcoreapp3.1": {
+          "targetAlias": "netcoreapp3.1",
           "imports": [
             "net461",
             "net462",
@@ -57,7 +54,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\3.1.403\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.101\\RuntimeIdentifierGraph.json"
         }
       }
     }

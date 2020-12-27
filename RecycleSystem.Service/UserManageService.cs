@@ -28,7 +28,7 @@ namespace RecycleSystem.Service
         {
             IQueryable<UserInfo> users = _dbContext.Set<UserInfo>();
             UserInfo user = users.Where(u => u.UserId == userInput.UserId).FirstOrDefault();
-            if (user==null)
+            if (user == null)
             {
                 try
                 {
@@ -255,6 +255,42 @@ namespace RecycleSystem.Service
             }
             message = "密码重置成功！初始密码：123";
             return _dbContext.SaveChanges() > 0;
+        }
+        public bool MutipleImport(IEnumerable<UserInput> userInfos, out string msg)
+        {
+            IQueryable<UserInfo> users = _dbContext.Set<UserInfo>();
+            //遍历
+            foreach (var item in userInfos)
+            {
+                UserInfo userInfo = users.Where(u => u.UserId == item.UserId).FirstOrDefault();
+                if (userInfo == null)
+                {
+                    UserInfo user = new UserInfo
+                    {
+                        UserId = item.UserId,
+                        UserName = item.UserName,
+                        UserTypeId = (int?)TypeEnum.UserType.isGeneralUser,
+                        Password = MD5Helper.EncryptString("123"),
+                        Gender = item.Gender,
+                        Email = item.Email,
+                        Tel = item.Tel,
+                        AddTime = DateTime.Now,
+                        DelFlag = false
+                    };
+                    _dbContext.Set<UserInfo>().Add(user);
+                }
+                else
+                {
+                    continue;
+                }
+            }
+            if (_dbContext.SaveChanges() > 0)
+            {
+                msg = "导入成功！";
+                return true;
+            }
+            msg = "失败！内部错误！";
+            return false;
         }
     }
 }

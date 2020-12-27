@@ -135,7 +135,7 @@ namespace RecycleSystem.DataEntity.Entities
 
                 entity.Property(e => e.Ip).HasColumnName("IP");
 
-                entity.Property(e => e.IsLoginSucess).HasColumnName("isLoginSucess");
+                entity.Property(e => e.IsLoginSuccess).HasColumnName("isLoginSuccess");
 
                 entity.Property(e => e.UserId).HasColumnName("UserID");
             });

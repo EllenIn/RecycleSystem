@@ -11,8 +11,8 @@ namespace RecycleSystem.DataEntity.Entities
         public string UserId { get; set; }
         public string Ip { get; set; }
         public string SystemInfo { get; set; }
-        public int? BrowseInfo { get; set; }
-        public bool? IsLoginSucess { get; set; }
+        public int? BrowserInfo { get; set; }
+        public bool? IsLoginSuccess { get; set; }
         public DateTime? HappenTime { get; set; }
     }
 }

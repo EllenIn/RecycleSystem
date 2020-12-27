@@ -63,7 +63,6 @@
             var checkStatus = table.checkStatus(obj.config.id);
             switch (obj.event) {
                 case 'update':
-                    debugger;
                     var data = checkStatus.data;
                     if (data.length == 1) {
                         var id = data[0].id;

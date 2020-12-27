@@ -32,7 +32,7 @@
         var form = layui.form;
         table.render({
             elem: '#orderList'
-            , url: '/OrderManage/VerifyGetUnVerifyOrderList'
+            , url: '/OrderManage/GetUnVerifyFinishedOrderList'
             , toolbar: '#toolbarDemo' //开启头部工具栏，并为其绑定左侧模板
             , defaultToolbar: ['filter', 'exports', 'print', { //自定义头部工具栏右侧图标。如无需自定义，去除该参数即可
                 title: '提示'
@@ -58,7 +58,7 @@
                 , { field: 'num', title: '数量', width: 80 }
                 , { field: 'unit', title: '单位', width: 80 }
                 , { field: 'categoryName', title: '类别', width: 180 }
-                , { field: 'originalOrder', title: '原订单号', width: 300, sort: false  }
+                , { field: 'originalOrder', title: '原订单号', width: 300, sort: false }
                 , { field: 'addTime', title: '添加时间', width: 200 }
             ]]
             , page: true
@@ -92,19 +92,18 @@
                         }
                     });
                     break;
-                case 'update':
-                    debugger;
+                case 'view':
                     var data = checkStatus.data;
                     if (data.length == 1) {
                         var id = data[0].id;
                         layui.use('layer', function () {
                             layer.open({
                                 type: 2,
-                                title: '修改用户信息',
+                                title: '查看订单',
                                 shade: 0.8,
                                 maxmin: true, //开启最大化最小化按钮
                                 area: ['893px', '600px'],
-                                content: '/OrderManage/View?Id=' + id,
+                                content: '/OrderManage/ViewFinishedOrder?id=' + id,
                                 end: function () {
                                     btn_search();
                                 }
@@ -167,7 +166,7 @@
 
         //重新加载表格，并把文本框的内容传给后台
         table.reload('orderList', {
-            url: '/OrderManage/VerifyGetUnVerifyOrderList',
+            url: '/OrderManage/GetUnVerifyFinishedOrderList',
             page: {
                 curr: 1//从第一页开始（很关键）
             },

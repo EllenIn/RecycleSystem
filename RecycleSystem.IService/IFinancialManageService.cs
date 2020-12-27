@@ -8,5 +8,6 @@ namespace RecycleSystem.IService
     public interface IFinancialManageService
     {
         IEnumerable<RevenueOutput> GetBills(int page, int limit, out int count, string queryInfo);
+        IEnumerable<RevenueOutput> GetAllBills();
     }
 }

@@ -15,5 +15,6 @@ namespace RecycleSystem.IService
         UserOutput GetUserById(int Id);
         IEnumerable<UserTypeOutput> GetUserType();
         bool AddUser(UserInput userInput,out string message);
+        bool MutipleImport(IEnumerable<UserInput> userInfos, out string msg);
     }
 }
